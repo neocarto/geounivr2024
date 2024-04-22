@@ -1,0 +1,795 @@
+---
+title: "introduction\n\nCartographier pour le Web avec `quarto`"
+subtitle: "Monastir, Tunisie, 2024"
+author: "Nicolas Lambert"
+title-slide-attributes:
+  data-background-color: black
+  data-background-image: img/line.png
+  data-background-size: cover
+  data-background-opacity: "0.7"
+format:
+  revealjs:
+    embed-resources: true
+    smaller: true
+    scrollable: true
+    theme: [simple, custom.scss]
+    code-line-numbers: false
+editor: visual
+execute:
+  echo: true
+---
+
+# Le Web
+
+## Internet et WWW
+
+Internet est né d'une initiative militaire américaine. Le premier nœud du réseau ARPANET (Advanced Research Project Agency Network) à l'origine d'Internet a été mis en place en **1969**.
+
+<img src="img/arpanet.webp" style="border:none"/></img>
+
+**12 Mars 1989 : première version du Web** - Tim Berners-Lee, chercheur britannique au CERN, a inventé le WWW.
+
+<img src="img/9407011_31-A4-at-144-dpi.jpg" style="border:none"/></img>
+
+A l’origine, le projet, baptisé « World Wide Web », a été conçu et développé pour que des scientifiques travaillant dans des universités et instituts du monde entier puissent s'échanger des informations instantanément.
+
+<img src="img/premierweb.png" style="border:none"/></img>
+
+::: {.callout-tip collapse="true"}
+## Web ou Internet ?
+
+Internet est une plateforme qui permet de faire parvenir des informations d’un ordinateur à un autre. Le web, lui, est un moyen de visiter des pages de sites à partir de navigateurs via des ordinateurs, des tablettes ou des smartphones.
+:::
+
+**1991** - le Web s’ouvre à tous.
+
+En **1993**, la technologie devient publique. Le Web voit très vite son usage exploser sur Internet.
+
+**fin 1994**, le nombre de serveurs web atteint les 10 000 !
+
+Le lancement de **Netscape**, le premier navigateur réellement grand public, participera aussi largement à sa démocratisation.
+
+<img src="img/netscape.webp" style="border:none"/></img>
+
+**Janvier 1994** : Yahoo !
+
+Le nombre de sites explose, à tel point qu’il devient très difficile pour l’internaute béotien de s’y retrouver. Deux étudiants de Stanford, Jerry Yang et David Filo, décident de créer un gigantesque annuaire de sites, classés de façon thématique. Il va vite devenir le portail numéro 1 de la Toile.
+
+<img src="img/yahoo.webp" style="border:none"/></img>
+
+**1998** Google lance son moteur de recherche
+
+<img src="img/google.webp" style="border:none"/></img>
+
+**2010** : l’émergence du HTML5, le futur du Web
+
+<img src="img/html5.png" style="border:none"/></img>
+
+25 ans après son invention, le HTML fait une douce révolution, toujours sous l’impulsion de **Tim Berners-Lee**. Grâce à la cinquième version du standard de balisage des pages Web – et de nombreuses technologies associées – de nouveaux services émergent. Objectif de ce standard : transformer les pages Web, encore trop statiques, en véritables programmes informatiques, qui n’auraient rien à envier aux applications pour smartphones ou aux logiciels que vous installez sur votre ordinateur. Et faire du navigateur l’unique appli dont vous aurez besoin.
+
+**Aujourd'hui**
+
+Plus de 4 milliard d’utilisateurs
+
+<img src="img/foule.jpg" style="border:none" width="100%"/></img>
+
+## Les langages du Web
+
+Derrière le web, il y a des langages informatiques qui sont interprétés directement dans les navigateurs.
+
+<img src="img/langage.png" style="border:none" width="50%"/></img>
+
+### Le HTML
+
+Le HyperText Markup Language, généralement abrégé HTML est ce qui correspond au squelette d'une page web. C'est la structuration du document. Le HTML est structuré par des **balises**.
+
+``` html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+</body>
+</html>
+```
+
+### Le CSS
+
+Les feuilles de style en cascade, généralement appelées CSS de l'anglais Cascading Style Sheets, forment un langage informatique qui décrit la présentation des documents HTML. Le CSS définit le **style** et le **positionnement** des éléments sur la page.
+
+``` css
+body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+```
+
+### Canvas
+
+Depuis HTML5, on peut directement dessiner dans le navigateur web. Avec Canvas en mode raster (pixels)
+
+Ce code
+
+``` html
+<canvas id="myCanvas2" width="100" height ="100" style="border:1px
+solid #000000; background-color: steelblue;"></canvas>
+```
+
+donne ceci :
+
+<canvas id="myCanvas2" width="100" height="100" style="border:1px solid #000000; background-color: steelblue;">
+
+</canvas>
+
+### SVG
+
+Le format SVG (Scalable Vector Graphics) est un format de données conçu pour décrire des ensembles de graphiques vectoriels. C'est le format qu'on utilise dans le logiciel **Inkscape**.
+
+Ce code
+
+``` html
+<svg viewBox="0 0 1000 100" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="100px" height="100px" fill="#F2CD3B" stroke="#06000C" />
+</svg>
+```
+
+donne ceci :
+
+<svg viewBox="0 0 1000 100" xmlns="http://www.w3.org/2000/svg">
+
+<rect x="0" y="0" width="100px" height="100px" fill="#F2CD3B" stroke="#06000C"/>
+
+</svg>
+
+Attention, les coordonnées \[0,0\] sont en haut à gauche.
+
+![](img/canvas.png)
+
+### Le JavaScript
+
+C'est le langage de script du navigateur.
+
+<img src="img/javascript.png" style="border:none"/></img>
+
+::: notes
+C'est un vieux langage qui n'a pas été concu pour l'analyse de données. Mais c'est le langage du web. Il fonctionne sur tous les navigateurs web sans avoir besoin d'installer quoi que ce soit. Ce langage peut être étendu pour devenir un langage dédié à la dataviz.
+:::
+
+## Le JavaScript
+
+Le JavaScript est un langage de programmation qui a presque 30 ans.
+
+### 1995
+
+![](img/javascript.png){height="100"}
+
+Le langage Javascript a été créé en dix jours en mai 1995 pour la Netscape Communications Corporation par **Brendan Eich**. Au départ, l'idée était de construire un petit langage pour faire des interactions sur les pages web. Attention, Javascript n'est pas JAVA !
+
+### 1997
+
+![](img/ecma.png){height="65"}
+
+Le langage Javascript est normalisé depuis 1997 par la commission TC39 de l'organisation ECMA International.
+
+### 2008
+
+Les navigateurs web ont travaillé à de nouveaux moteurs pour améliorer les performances. **V8** est un moteur JavaScript open-source développé par le projet Chromium pour les navigateurs Web Google Chrome et Chromium (dernière version 31 janvier 2022). Il y a aussi **SpiderMonkey** pour Firefox, **Chakra** pour Microsoft Edge et **JavaScriptCore** pour Safari.
+
+### 2009
+
+![](img/node.png){height="100"}
+
+Création de Node.js par **Ryan Dahl**, qui permet d'utiliser le JavaScript comme langage de programmation côté serveur (back-End).
+
+### 2015
+
+Depuis 2015 (ES6 ou ES2015), le langage JavaScript est mature. Performant. Et est implémenté de manière harmonisée dans tous les navigateurs. On parle de *modern JavaScript*
+
+### demain ?
+
+De nouvelles fonctionnalitées sont ajoutées au langage chaque année.
+
+Voir : [observablehq.com/\@robertbatty/ecmascript-2015-2022](https://observablehq.com/@robertbatty/ecmascript-2015-2022)
+
+### Une grande communauté
+
+C'est un langage ancien qui dispose d'une très grande communauté.
+
+::: columns
+::: {.column width="49%"}
+JavaScript est à ce jour un des langages les plus utilisé par les developpeurs informatiques.<br/><img src="img/popularityjs.png" style="border:none"/></img><br/>
+:::
+
+::: {.column width="49%"}
+Il y a à ce jour plus de 2 millions de packages disponibles sur **npm**<br/><img src="img/npm1.png" style="border:none"/></img>
+:::
+:::
+
+### JavaScript permet de dessiner dans le navigateur
+
+```{ojs}
+{
+  const svg = d3
+    .create("svg")
+    .attr("viewBox", [0, 0, 500, 60])
+    .style("background-color", "#CCC");
+    
+  svg
+    .append("circle")
+    .attr("cx", 50)
+    .attr("cy", 30)
+    .attr("r", 25)
+    .style("fill", "#e04a28");
+    
+  return svg.node();
+}    
+```
+
+### JavaScript n’a pas été conçu pour l’analyse de données
+
+Par exemple, l'opération de tri par défaut trie les valeurs par ordre alphabétique.
+
+```{ojs}
+{
+let a = [7,1,9,3,10,4,5,6,2,8]
+return a.sort()
+}
+```
+
+### Mais incontournable et prometeur
+
+-   C'est le langage du web
+-   Grande communauté
+-   Langage de plus en plus performant
+-   De nombreuses bibliothèques existent déjà Du coup, certains pensent que le JavaScript est le langage de demain pour traiter et analyser des données.
+
+![](img/towards.png)
+
+*https://towardsdatascience.com/javascript-for-data-analysis-2e8e7dbf63a7*
+
+# Observable Javascript 📊
+
+::: notes
+Observable Javascript est une évolution du langage JavaScript pour en faire un langage déduié à l'analyse et la visualisation de données.
+:::
+
+Un langage dédié à la visualisation de données pour le web
+
+## Observable, kezako ?
+
+L'<b>Observable javascript (ojs)</b> est un ensemble d'améliorations apportées à vanilla JavaScript créé par Mike Bostock (également auteur de D3). Observable JS se distingue par son exécution réactive, qui convient particulièrement bien à l'exploration et à l'analyse interactives des données. Objectif : faire collaborer une communauté autour de la visualisation de données.
+
+![](img/chronologie.png)
+
+<b>Observable</b> est aussi une startup fondée par Mike Bostock et Melody Meckfessel, qui propose une plateforme 100% en ligne pour concevoir, partager et diffuser des visualisations de données.
+
+![](img/observable.png){height="200"}
+
+C'est aussi une <b>plateforme web disponible à l'adresse **https://observablehq.com/** qui héberge des *notebooks*</b> *computationnels* sur la visualisation de données.
+
+Les notebooks sont comme des billets de blog. Ils contiennent du texte, des images et du contenu multimédia. Ils peuvent être rangés dans des collections. Ils sont disponibles en ligne via une url. Comme on peut s'y attendre, ils contiennent aussi des lignes de code. L'objectif : faire de la Programmation lettrée (<b>literate programming</b>).
+
+![](img/obs.png)
+
+<b>Références</b>
+
+Reactive, reproducible, collaborative: computational notebooks evolve, par Jeffrey M. Perkel. <https://www.nature.com/articles/d41586-021-01174-w>
+
+Javascript for data Analysis, par Mike Bostock <https://towardsdatascience.com/javascript-for-data-analysis-2e8e7dbf63a7>
+
+## Observable notebooks
+
+Les notebooks Observable permettent de travailler en ligne, directement dans le navigateur, sans avoir beosin d'installer le moindre logiciel. Il faut bien sur avoir une bonne connexion internet.
+
+![](img/observable2.png){width:100%}
+
+## Observable framework
+
+Depuis cette année, Observable a lancé un nouvel outil nommé **Observable Framework**
+
+![](img/framework.png)
+
+## Observable dans Quarto
+
+![](img/quarto.png){height="50"}
+
+Quarto permet de créer des documents markdown, des articles, des rapports, des présentations, des sites web, des blogs et des livres, aux formats HTML, PDF, Word, ePub, etc.
+
+Il permet de créer un contenu dynamique dans différents langages : Python, R, Julia et **Observable JavaScript**.
+
+Cela permet de créer des documents, des rapports et des analyses entièrement reproductibles
+
+![](img/quartoojs.png)
+
+## JavaScript ≠ ojs
+
+::: columns
+::: {.column width="49%"}
+OJS c'est du JavaScript + plein de bibliothèques pré chargées : <br/>
+
+| Symbol   | Name              | Version            |
+|----------|-------------------|--------------------|
+| \_       | Lodash            | 4.17.21            |
+| aq       | Arquero           | \${aq.version}     |
+| Arrow    | Apache Arrow      | 4.0.1              |
+| d3       | D3.js             | \${d3.version}     |
+| dot      | Graphviz          | 0.2.1              |
+| htl      | Hypertext Literal | \${htl.version}    |
+| Inputs   | Observable Inputs | \${Inputs.version} |
+| L        | Leaflet           | \${L.version}      |
+| mermaid  | Mermaid           | 9.1.6              |
+| Plot     | Observable Plot   | \${Plot.version}   |
+| SQLite   | SQL.js            | 1.7.0              |
+| topojson | TopoJSON Client   | 3.1.0              |
+| vl       | Vega, Vega-Lite   | 5.22.1, 5.2.0      |
+:::
+
+::: {.column width="49%"}
+OJS c'est aussi une évolution du langage javascript pour en faire un langage adapté à l'analyse et la visualisation de données sur le web.
+
+![](img/datascience.png)
+:::
+:::
+
+## Les cellules / chunk {ojs}
+
+Dans Quarto, on peut écrire/executer du code Observable en utilisant des chuncks **{ojs}**.
+
+Chaque ligne définit une variable et une cellule qui doit être unique.
+
+cellule 1 :
+
+```{ojs}
+a = 5 
+```
+
+cellule 2 :
+
+```{ojs}
+b = 7 
+```
+
+cellule 3 :
+
+```{ojs}
+a + b
+```
+
+Avec ojs, l'ordre d'écriture n'a pas d'importance 🤔 On peut donc écrire :
+
+Ceci :
+
+```{ojs}
+c * d 
+```
+
+Avant ça
+
+```{ojs}
+c = 3
+```
+
+et ça
+
+```{ojs}
+d = 8
+```
+
+La raison est que la relation entgre les cellules s'effectue de manière topologique.
+
+![](img/topo.png){height="400"}
+
+Chaque cellule doit impérativement être unique. En conséquance, je n'ai pas le droit de redéfinir une de ces variables.
+
+```{ojs}
+e = 10
+e = 5
+```
+
+Il est donc souvent utile de créer des blocs de code avec des {...} quand le traitement devient plus complexe.
+
+```{ojs}
+{
+  let val1 = 8;
+  let val2 = 7;
+  val1 = 5;
+  return val1 * val2;
+}
+
+```
+
+Mais la plupart du temps, pour faire ce genre de calcul, on écrira plutôt des fonctions. Comme ceci :
+
+```{ojs}
+function sum(a, b) {
+  return a + b;
+}
+// Appel de la fonction
+sum(10, 30)
+```
+
+Ou comme cela :
+
+```{ojs}
+multi = (a, b) => a * b
+// Appel de la fonction
+multi(3, 8)
+```
+
+Ce parti pris fort, peut être déroutant. Mais il a un gros avantage. Il permet d'organiser un document indépendemment de la façon dont on code. Cela permet par exemple de mettre une carte en haut de la page et en annexe technique tout en bas le code qui la génère.
+
+## Les Inputs
+
+Dans Observable, on a à disposition des *Inputs* directement prêts à l'emploi.
+
+### 👉 button
+
+```{ojs}
+viewof clicks = Inputs.button("Click")
+clicks
+```
+
+### 👉 toogle
+
+```{ojs}
+viewof mute = Inputs.toggle({label: "Mute", value: true})
+mute
+```
+
+### 👉 range
+
+```{ojs}
+viewof gain = Inputs.range([0, 11], {value: 5, step: 0.1, label: "Gain"})
+gain
+```
+
+### 👉 checkbox
+
+```{ojs}
+viewof colors = Inputs.checkbox(["red", "green", "blue"], {label: "color"})
+colors
+```
+
+### 👉 radio
+
+```{ojs}
+viewof color = Inputs.radio(["red", "green", "blue"], {label: "color"})
+color
+```
+
+### 👉 select
+
+```{ojs}
+villes = ["Sousse", "Monastir", "Sfax"]
+viewof maville = Inputs.select(villes, {value: "steelblue", label: "Choisissez une ville"})
+maville
+```
+
+### 👉 text
+
+```{ojs}
+viewof text = Inputs.text()
+text
+```
+
+### 👉 textarea
+
+```{ojs}
+viewof textarea = Inputs.textarea()
+textarea
+```
+
+### 👉 date
+
+```{ojs}
+viewof date = Inputs.date()
+date
+```
+
+### 👉 color
+
+```{ojs}
+viewof pickcolor = Inputs.color({label: "couleur préférée", value: "#4682b4"})
+pickcolor
+```
+
+### 👉 file
+
+```{ojs}
+viewof file = Inputs.file()
+file
+```
+
+### 👉 formulaire
+
+```{ojs}
+//| panel: sidebar
+//| echo: false
+viewof range1 = Inputs.range([0, 11], {value: 5, step: 0.1, label: "range1"})
+viewof range2 = Inputs.range([0, 11], {value: 5, step: 0.1, label: "range2"})
+viewof range3 = Inputs.range([0, 11], {value: 5, step: 0.1, label: "range3"})
+```
+
+```{ojs}
+//| panel: fill
+range1
+range2
+range3
+
+```
+
+## Tout est réactif 🔥
+
+Dans Observable, grace à la relation topologique entre les cellules, tout est réactif. Chaque fois qu'on bouge quelque chose, ce qui en dépend est rééxécuté.
+
+```{ojs}
+viewof age = Inputs.range([15, 70], {label: "age", value: 30, step: 1,})
+viewof nom = Inputs.text({label: "nom", value: "Nicolas"})
+```
+
+Par exemple :
+
+```{ojs}
+md`Je m'appelle **${nom}** et j'ai **${age}** ans :-)`
+```
+
+Reprenons notre SVG de tout à l'heure
+
+```{ojs}
+{
+  const svg = d3
+    .create("svg")
+    .attr("viewBox", [0, 0, 500, 60])
+    .style("background-color", "#CCC");
+    
+  svg
+    .append("circle")
+    .attr("cx", 50)
+    .attr("cy", 30)
+    .attr("r", 25)
+    .style("fill", "#e04a28");
+    
+  return svg.node();
+}
+```
+
+On peut facilement proposer à l'utilisateur de moidifier ce dessin en remplaçant des valeurs par des variables pilotées par des inputs.
+
+```{ojs}
+//| echo: true
+//| eval: false
+{
+  const svg = d3
+    .create("svg")
+    .attr("viewBox", [0, 0, 500, 60])
+    .style("background-color", "#CCC");
+    
+  svg
+    .append("circle")
+    .attr("cx", cx)
+    .attr("cy", 30)
+    .attr("r", r)
+    .style("fill", col);
+    
+  return svg.node();
+}
+```
+
+Par exemple :
+
+```{ojs}
+//| panel: input
+//| echo: true
+viewof cx = Inputs.range([30, 470], {value: 50, step: 1, label: "position"})
+viewof col = Inputs.color({ value: "#e04a28", label: "couleur"})
+viewof r = Inputs.range([5, 30], {value: 25, step: 0.1, label: "rayon"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const svg = d3
+    .create("svg")
+    .attr("viewBox", [0, 0, 500, 60])
+    .style("background-color", "#CCC");
+    
+  svg
+    .append("circle")
+    .attr("cx", cx)
+    .attr("cy", 30)
+    .attr("r", r)
+    .style("fill", col);
+    
+  return svg.node();
+}
+```
+
+## Les données
+
+L'ajout de données s'effectue avec l'instruction `FileAttachment()`
+
+### 👉 fichier csv
+
+```{ojs}
+data1 = FileAttachment("data/afrika_data.csv").csv()
+```
+
+Les données sont importées et converties automatiquement au format json
+
+```{ojs}
+//| echo: false
+data1
+```
+
+Pour les visualiser, on utilise `Inputs.table()`
+
+```{ojs}
+Inputs.table(data1)
+```
+
+### 👉 fichier xlsx
+
+On peut également importer des fichiers excel
+
+```{ojs}
+classeur = FileAttachment("data/afrika.xlsx").xlsx()
+```
+
+On obtient la liste des feuilles comme cela :
+
+```{ojs}
+classeur.sheetNames
+```
+
+Puis, on peut choisir la feuille à ouvrir
+
+```{ojs}
+data2 = classeur.sheet("data", {
+  headers: true
+})
+```
+
+```{ojs}
+//| echo: false
+data2
+```
+
+### 👉 Mise en forme des données
+
+Pour mettre en forme les données, on peut le faire en pure JavaScript.
+
+```{ojs}
+subdata1 = data1
+  .filter((d) => +d.ESPVIE > 65)
+  .map((d) => ({ code: d.iso3, nom: d.nom, POP: d.POP, PIB: d.PIB, ESPVIE: d.ESPVIE }))
+  .sort((a, b) => d3.descending(b.ESPVIE, a.ESPVIE))
+```
+
+Ca donne ceci :
+
+```{ojs}
+//| echo: false
+Inputs.table(subdata1)
+```
+
+On peut aussi utiliser `arquero`. Voir : [https://observablehq.com/\@observablehq/data-wrangler](@observablehq/data-wrangler).
+
+```{ojs}
+subdata2 = aq
+  .from(data1)
+  .filter((d) => d["ESPVIE"] > 65)
+  .rename({ iso3: "code" })
+  .select("code", "nom", "POP", "PIB", "ESPVIE")
+  .orderby("ESPVIE")
+  .objects()
+```
+
+Le résultat est le même.
+
+```{ojs}
+//| echo: false
+Inputs.table(subdata2)
+```
+
+### 👉 fichier geoJSON
+
+Pour utiliser des géométries, on utilisera prioritairement le format geoJSON.
+
+```{ojs}
+basemap = FileAttachment("data/africa.json").json()
+```
+
+Voilà la structure d'un geoJSON
+
+```{ojs}
+//| echo: false
+basemap
+```
+
+Et voici à quoi il ressemble si on l'affiche (nous verrons plus tard comment...)
+
+```{ojs}
+//| eval: true
+//| echo: false
+viz = require("geoviz@0.5.9")
+{
+let svg = viz.create({domain: basemap, width: 500, zoomable:true})
+svg.path({data: basemap, tip: true, fill:"red",})
+return svg.render()
+}
+```
+
+## Librairies externes
+
+Observable javascript n'est pas un écosystème fermé. Des millions de librairies javascript existent sur NPM (équivalent du CRAN pour R). Il est possible de les utiliser.
+
+![](img/npm.png)<br/>
+
+Ici, nous pouvons les importer directement avec l'instruction `require()`
+
+```{ojs}
+geo = require("geotoolbox")
+```
+
+Généralisation cartographique
+
+```{ojs}
+//| eval: false
+//| echo: true
+viewof k = Inputs.range([0.01, 0.5], { label: "k", step: 0.01, value: 0.05 })
+geo.simplify(world, { k })
+```
+
+```{ojs}
+//| eval: true
+//| echo: false
+world = FileAttachment("data/world.json").json()
+viewof k = Inputs.range([0.01, 0.5], { label: "k", step: 0.01, value: 0.05 })
+world_light = geo.simplify(world, { k })
+{
+let svg = viz.create({domain: world, width: 500})
+svg.path({data: world_light, tip: true, fill:"none",stroke:"red"})
+return svg.render()
+}
+```
+
+## Imports
+
+On l'a dit tout à l'heure, Observable c'est aussi une plateforme web hebergeant des notebooks.
+
+![](img/trendings.png)<br/>
+
+Si on a une connexion internet, il ets possible d'importer n'importe quelle cellule de n'importe quel notebook avec la fonction `import`. Dit autrement, toutes les notebooks hébergés sur observablehq.com fonctionnent comme des api.
+
+```{ojs}
+import {SankeyChart} from "@d3/sankey"
+import {energy} from "@d3/sankey"
+```
+
+Puis, on peut utiliser cette fonction.
+
+```{ojs}
+chart = SankeyChart({
+  links: energy
+}, {
+  nodeGroup: d => d.id.split(/\W/)[0], // take first word for color
+  width,
+  height: 600
+})
+```
+
+# Travaux pratiques

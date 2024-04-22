@@ -1,0 +1,100 @@
+--- 
+title: "Mon dashboard avec Quarto"
+author: "Nicolas Lambert, 2024"
+format:
+  dashboard:
+    theme: journal
+--- 
+
+# {.toolbar}
+
+```{ojs}
+viewof indicator = Inputs.select(new Map(metadata.map((d) => [d.description, d.id])), {label:"Indicator"})
+```
+
+```{ojs}
+viewof year = Inputs.range([1960, 2022], { step: 1, value: 1960, label:"Year" })
+```
+
+# Map
+
+```{ojs}
+svg = viz.create({projection:d3.geoNaturalEarth1(), zoomable:true})
+outline = svg.outline({id: "outline"})
+graticule = svg.graticule({id: "graticule"})
+path = svg.path({datum: world, fill:"white", fillOpacity:0.3, id: "path"})
+layer = {
+  if ((types.get(indicator) == "stock") & (nbvalues >= 10)) {
+    return svg.plot({
+      type: "prop",
+      data: worldyear,
+      var: indicator,
+      id: "mylayer",
+      fill: "red",
+      fillOpacity: 0.7,
+      tip: `$name\nvaleur: $${indicator}`
+    });
+  }
+  if ((types.get(indicator) == "ratio") & (nbvalues >= 10)) {
+    return svg.plot({
+      type: "choro",
+      data: worldyear,
+      var: indicator,
+      id: "mylayer",
+      tip: `$name\nvaleur: $${indicator}`
+    });
+  }
+  if (nbvalues < 10) {
+    svg.select("#leg_mylayer").selectAll("*").remove();
+  }
+}
+svg.render({order:[outline, graticule, path, layer]})
+```
+
+# Chart
+
+```{ojs}
+viewof topnb = Inputs.range([5, 50], {label: "Nombre de pays représentés", step: 1})
+top = datadisplay.sort((a, b) => d3.descending(+a[indicator], +b[indicator]))
+  .slice(0, topnb)
+Plot.plot({
+  marginLeft: 60,
+  marks: [
+    Plot.barY(top, {
+      x: "id",
+      y: indicator,
+      sort: { x: "y", reverse: true },
+      fill: "red"
+    }),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+# Table {orientation="columns" scrolling="false"}
+
+```{ojs}
+viewof search = Inputs.search(datadisplay)
+Inputs.table(search)
+```
+
+
+```{ojs}
+//| output: false
+// Appendix
+viz = require("geoviz@0.6.0")
+worldbank = FileAttachment("data/worldbank.zip").zip()
+data = worldbank.file("data.csv").csv()
+metadata = worldbank.file("metadata.csv").csv()
+world = worldbank.file("world.json").json()
+datayear = data.filter(d => d.year == year)
+worldyear = viz.tool.merge({geom: world, geom_id: "ISO3", data: datayear, data_id:"id"}).featureCollection
+datadisplay = datayear.map(d => ({id: d.id, name:d.name, [indicator]:d[indicator]}))
+types = new Map(metadata.map((d) => [d.id, d.type]))
+nbvalues = datadisplay.map(d => d[indicator]).filter(d => d!== "").length
+```
+
+
+
+
+

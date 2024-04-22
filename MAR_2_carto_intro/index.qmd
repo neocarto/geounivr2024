@@ -1,0 +1,186 @@
+---
+title: "Petite histoire de la cartographie thématique"
+subtitle: "Monastir, Tunisie, 2024"
+author: "Nicolas Lambert"
+title-slide-attributes:
+  data-background-color: black
+  data-background-image: img/IMG_20190716_144718.jpg
+  data-background-size: cover
+  data-background-opacity: "0.7"
+format:
+  revealjs:
+    embed-resources: true
+    smaller: true
+    scrollable: true
+    theme: [simple, custom.scss]
+    code-line-numbers: false
+editor: visual
+execute:
+  echo: true
+---
+
+## Les premières cartes
+
+::: columns
+::: {.column width="49%"}
+<img src="img/Bedolina.jpg" style="border:none"/></img><br/> "Cadastre" de <b>Bedolina</b> (découverte en en Italie du nord) 2000 ans av.n.è. J.-C. Quatre périodes au moins de gravure se superposent, et cette mystérieuse topographie apparaît sur la deuxième couche, voisinant avec des représentations de cervidés. S'il s'agit bien d'un premier vocabulaire topographique, nous ne savons pas le lire.<br/>
+:::
+
+::: {.column width="49%"}
+<img src="img/Mattangs.jpeg" style="border:none"/></img><br/> Ces cartes polynésiennes appelées <b>Rebbelibs</b>, <b>Medosou</b> ou <b>Mattangs</b> représentants les courants marins et la direction de la houle qui est perturbée par la présence des îles avec des batons de bois courbés, les coquillages représentants la position des îles. Elle datent de 1000 av.n.è.
+:::
+:::
+
+### Des représentations du Monde qui s'affinent
+
+<img src="img/I.01.histoire.png"/></img>
+
+*Lambert, N., Zanin C. (2019). Mad Maps - L'Atlas qui va changer votre vision du monde (p. 144p). Armand Colin.*
+
+::: notes
+L'humanité produit des cartes depuis plus de 4000 ans pour se repérer et/ou se déplacer. Petit à petit les représentations du monde se sont affinées. On dispose aujourd'hui de bases de données très précises permetant de représenter le monde. Est-ce "la fin de l'histoire" cartographique ?
+:::
+
+## Les débuts de la dataviz
+
+::: {align="center"}
+<b>Nicole Oresme</b> (1370) est un des premiers à concevoir le principe et l'utilité des coordonnées cartésiennes pour la représentation graphique de phénomènes quantitatifs
+
+::: columns
+::: {.column width="49%"}
+<img src="img/oresme1.png" style="border:none"/></img>
+:::
+
+::: {.column width="49%"}
+<img src="img/oresme2.png" style="border:none"/></img>
+:::
+:::
+
+<b>William Playfair</b> (1786)<br/>Commercial and Political Atlas.<br/>
+
+::: columns
+::: {.column width="49%"}
+<img src="img/Playfair1.png" style="border:none"/></img>
+:::
+
+::: {.column width="49%"}
+<img src="img/Playfair2.png" style="border:none"/></img>
+:::
+:::
+
+<b>Florence Nightingale</b> (1857)<br/>Notes on Matters Affecting the Health, Efficiency and Hospital Administration of the British Army.<br/>
+
+<img src="img/Nightingale.png" style="border:none"/></img>
+:::
+
+::: notes
+On va s'interesser maintenant à une autre histoire, celle de la visualisation de données. Cette histoire est plus courte. Elle commence vraiment au 18e siecle avec William Playfair et Florence Nightingale.
+:::
+
+## La rencontre de 2 mondes
+
+Quand la cartographie rencontre la visualisation de données statistiques
+
+::: {align="center"}
+::: columns
+::: {.column width="49%"}
+Carte figurative de l'instruction populaire en France (<b>Charles Dupin</b>, 1826) <img src="img/Dupin.png" style="border:none"/></img><br/>
+:::
+
+::: {.column width="49%"}
+<b>Frère de Montizon</b> (1830)<br/> <img src="img/Montizon.png" style="border:none"/></img> <b>Emile Cheysson</b> (1886) <img src="img/Cheysson.png" style="border:none"/></img><br/>
+:::
+:::
+
+### Le <i>GOLD STANDARD</i> de la dataviz
+
+<img src="img/Minard.png" style="border:none"/></img>
+
+Carte Figurative des pertes successives en hommes de l'armée française dans la campagne de Russie 1812--1813.<br/><br/>Charles Joseph Minard (1869). <b>Minard</b> représente en 1869 les pertes colossales de l'armée française dans la campagne de Russie au début du XIXe siècle. Cette fameuse « carte figurative » raconte l'histoire de cette armée, qui arrive à Moscou avec moins d'un quart de son effectif de départ, avant de se faire à nouveau décimer sur le voyage du retour.
+:::
+
+::: notes
+Ces deux histoires s'intersectent pour la première fois en 1826 avec la carte figurative de Charles Dupin. Pour la première fois, on représentatait des données statistiques sur un repère géographique. C'est aussi la première carte choroplèthe. S'en suivent de nombreuses autres représentations cartographiques. Les réalisations de C.J. Minard sont particulièrement remarquables.
+:::
+
+## Bertin, 1967 (et 1973)
+
+-   Enorme travail de synthèse.
+-   Approche plutôt pragmatique.
+-   Pour le papier.
+-   En noir et blanc.
+-   Mais un travail qui reste central pour toutes celles et ceux qui travaillent sur la visualisation de données aujourd'hui.
+
+<img src="img/semio.png" style="border:none"/></img>
+
+::: notes
+Cette façon de représenter des données via des signes graphiques et systhétisée de façon remarquable en 1967 par Jacques Bertin.
+:::
+
+## Sémiologie graphique
+
+La nature de la donnée détermine le type de représentation.
+
+<img src="img/de-la-donnee-a-la-carte.png" style="border:none" width="100%"/></img>
+
+### Variables visuelles de différenciation
+
+Données qualitatives nominales
+
+<img src="img/VV_differenciation_synthese.png" style="border:none" width="100%"/></img> <img src="img/VV_differenciation_efficacité.png" style="border:none" width="100%"/></img>
+
+### Variables visuelles d'ordre
+
+Données qualitatives ordinales et données quantitatives relatives
+
+<img src="img/VV_ordre_synthese.png" style="border:none" width="100%"/></img>
+
+### Variables visuelles de proportionnalité
+
+Données de stock
+
+<img src="img/VV_prop_synthese.png" style="border:none" width="100%"/></img>
+
+### La règle de base à retenir !️
+
+⚠️ Pas de stock en aplat
+
+::: columns
+::: {.column width="49%"}
+<img src="img/Fail-500x480.png" style="border:none"/></img>
+:::
+
+::: {.column width="49%"}
+<img src="img/success-500x480.png" style="border:none"/></img>
+:::
+:::
+
+## Les logiciels
+
+Il existe une multitude de logiciels permetant de réaliser des cartes ou contribuant à leurs réalisation. Logiciules SVG, logiciels de cartographie clic bouton, logiciels en ligne de commande, logiciels DAO...
+
+<img src="img/logiciels.svg" style="border:none" width="100%"/></img>
+
+## Cartographie reproductible
+
+De l'acquisition de données à la carte finale, on mobilise génralement différents logiciels, libres ou propriétaires. Plus on multiplie les logiciels, plus la chaine de traitement est brisée.
+
+<img src="img/chaine-traitement.png" style="border:none" width="100%"/></img>
+
+Une carte est dite reproductible si elle est accompagnée de tout ce qui a permis de le concevoir.
+
+<img src="img/Peng.png" style="border:none" width="100%"/></img>
+
+Exemple de carte réalisée avec une chaine de traitrement 100% en R.
+
+<img src="img/ironcurtain.png" style="border:none" width="100%"/></img>
+
+[rzine.fr/docs/20191125_ironcurtain](https://rzine.fr/docs/20191125_ironcurtain/index.html)
+
+Exemple de chaine de traitement
+
+<img src="img/workflow.png" style="border:none" width="100%"/></img>
+
+Le logiciel r::mapsf
+
+<img src="img/mapsf.png" style="border:none" width="300px/"/></img>

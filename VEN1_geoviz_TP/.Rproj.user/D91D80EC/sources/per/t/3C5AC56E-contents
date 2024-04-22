@@ -1,0 +1,827 @@
+---
+title: "GEO UNIV'R Tunisie 2024"
+subtitle: "Cartographier pour le Web avec `quarto` `{ojs}` et `geoviz`"
+date: "`r Sys.Date()`"
+author: "Nicolas Lambert, Elina Marveaux, Ronan Ysebaert"
+format:
+  html:
+    embed-resources: true
+    theme: yeti
+    smooth-scroll: true
+    fontsize: 0.9em
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+**L'objectif de ce TP est d'apprendre à créer des cartes interactives avec Quarto et la bibliothèque JavaScript `geoviz`.**
+
+```{ojs}
+//| echo: false
+chart = { 
+  const k = width / 120;
+  const r = d3.randomUniform(k, k * 4);
+  const n = 4;
+  const data = Array.from({length: 100}, (_, i) => ({r: r(), group: i && (i % n + 1)}));
+  const height = width / 3;
+  const color = d3.scaleOrdinal(d3.schemeTableau10);
+  const context = DOM.context2d(width, height);
+  const nodes = data.map(Object.create);
+
+  const simulation = d3.forceSimulation(nodes)
+    .alphaTarget(0.3)
+    .velocityDecay(0.1)
+    .force("x", d3.forceX().strength(0.01))
+    .force("y", d3.forceY().strength(0.01))
+    .force("collide", d3.forceCollide().radius(d => d.r + 1).iterations(3))
+    .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width * 2 / 3))
+    .on("tick", ticked);
+
+  d3.select(context.canvas)
+    .on("touchmove", event => event.preventDefault())
+    .on("pointermove", pointermoved);
+
+  invalidation.then(() => simulation.stop());
+
+  function pointermoved(event) {
+    const [x, y] = d3.pointer(event);
+    nodes[0].fx = x - width / 2;
+    nodes[0].fy = y - height / 2;
+  }
+
+  function ticked() {
+    context.clearRect(0, 0, width, height);
+    context.save();
+    context.translate(width / 2, height / 2);
+    for (let i = 1; i < nodes.length; ++i) {
+      const d = nodes[i];
+      context.beginPath();
+      context.moveTo(d.x + d.r, d.y);
+      context.arc(d.x, d.y, d.r, 0, 2 * Math.PI);
+      context.fillStyle = color(d.group);
+      context.fill();
+    }
+    context.restore();
+  }
+
+  return context.canvas;
+}
+```
+
+# 1. Introduction
+
+Avant de commencer, merci de regarder cette <a href ="" target = "_BLANK">introduction</a> sur le Web, son histoire, ses langages et l'Observable JavaScript. C'est un prérequis pour comprendre la suite.
+
+# 2. Démarrer avec Quarto
+
+## 2.1 Environnement logiciel.
+
+Ce TP s'effectue avec le logiciel **Quarto**. Pour l'installer, vous pouvez utiliser le lien suivant :
+
+[https://quarto.org/docs/get-started](https://quarto.org/docs/get-started/)
+
+Puis, vous avez besoin d'une interface de développement pour écrire le code et visualiser le résultat. Vous avez le choix.
+
+![](img/ide.png)
+
+Dans ce TP, nous privilégions l'utilisation du logiciel **Rstudio**. Pour le télécharger et l'installer, cliquez sur ce [lien](https://posit.co/download/rstudio-desktop/).
+
+## 2.2 Créer un document Quarto
+
+-   Sur votre ordinateur, creez un dossier **TP_geoviz** à l'emplacement de votre choix.
+-   Ouvrez le logiciel RStudio
+-   Créez un document Quarto (file \> New File \> Quarto Document)
+
+![](img/create.png)
+
+-   Cliquez sur "Create Empty Document" en bas à gauche.
+-   Mettez-vous en mode source
+
+![](img/source.png)
+
+Vous obtenez un fichier contenant les lignes suivantes :
+
+```         
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+```
+
+-   Choisissez un titre
+-   Sauvegardez le fichier **index.qmd** dans le dossier **TP_geoviz**.
+-   Dans ce repertoire, créez également un sous répertoire **data** pour stocker les données.
+
+![](img/dossiers.png)
+
+## 2.3 Rappel des principes
+
+Dans ce TP, nous allons réaliser des cartes avec **Observable JavaScript** (ou **ojs**). Rappelons que l'ojs est un ensemble d'améliorations apportées à JavaScript avec l'objectif d'en faire un langage dédié à la visualisation de données pour le web. Ce langage est complètement intégré dans Quarto.
+
+Les caractéristiques de l'ojs sont les suivantes :
+
+-   Il s'agit de JavaScript + des bibliothèques préchargées comme `Plot` & `d3js` 📊
+-   Tout est réactif 🔥 et rejoué en temps réel
+-   L'ordre des cellules n'a pas d'importance 🤯
+-   Chaque début de ligne identifie une *cellule* ojs. Le nom de ces *cellules* doit être unique pour l'ensemble du document.
+
+Dans Quarto, toutes les instructions à suivre s'écrivent dans des chunks ojs
+
+````         
+``` {ojs}
+```
+````
+
+::: {.callout-caution title="Attention"}
+Attention, les chucks et les cellules sont deux concepts différents.
+:::
+
+Un chunk contanant une seule cellule
+
+````         
+``` {ojs}
+sum = 10 + 10
+```
+````
+
+Un chunk contanant trois cellules
+
+````         
+``` {ojs}
+a = 10
+b = 20
+c = a * b
+```
+````
+
+Un chunk contanant une seule cellule
+
+````         
+``` {ojs}
+{
+  // code JavaScript
+  let a = 10
+  let b = 20
+  return a * b
+}
+```
+````
+
+Pour chaque *chunck*, vous pouvez définir avec `echo` si vous souhaitez que le code s'affiche ou non dans votre notebook final. Avec `eval`, vous choisissez si le code doit s'exécuter ou non.
+
+````         
+``` {ojs}
+//| echo: false
+//| eval: true
+```
+````
+
+Le code en ligne vous permet également d'exécuter du code à l'intérieur du texte markdown. La syntaxe du code en ligne est similaire à celle des blocs de code, sauf que vous utilisez une seule coche (\`) au lieu de trois coche (\`\`\`)
+
+```{ojs}
+radius = 5
+```
+
+``` js
+Le rayon du cercle est égal à **``{ojs} radius``**
+```
+
+donne ceci :
+
+Le rayon du cercle est égal à **`{ojs} radius`**
+
+Pour générer le document, il faut clicher sur le bouton `Render` ou utiliser le racourci clavier **Ctrl+Shift+K**.
+
+Une fois que vous avez cliqué sur *Render*, la page web s'affiche dans la panneau *Viewer* et un dossier **Docs** est crée. Il contient le site web généré.
+
+Vous pouvez aussi cliquer sur l'icône *voir dans une nouvelle fenêtre* pour visualiser votre document dans votre navigateur web habituel.
+
+![](img/view.png)
+
+N'oubliez pas de sauvegarder votre document régulièrement (CTRL+S)
+
+## 2.4 Documentation et exemples
+
+Au fil de ce notebook, vous pourrez vous référer à des éléments de documentation en cliquant sur cet icône.
+
+![](img/logo_doc.png)
+
+Vous pourrez également accéder à des exemples pédagogiques et des demos en ligne en cliquant sur celui-là.
+
+![](img/logo_exemple.png)
+
+# 3. Les données
+
+Le jeu de données utilisé est issu de la [banque mondiale](https://data.worldbank.org/indicator). Les données ont été mises en forme [ici](https://observablehq.com/@neocartocnrs/world-bank-data).
+
+Téléchargez les données et placez-les-les dans votre repertoire **data**.
+
+<a href = "https://gitlab.huma-num.fr/rysebaert/formation-tunisie/-/raw/main/geoviz_TP/data/worldbank.zip"><img src="img/download.png" height="50px"/><img /></a>
+
+## 3.1 Import des données
+
+Dans {ojs}, on importe les données avec l'instruction `FileAttachment()` <a href="https://github.com/observablehq/stdlib#file-attachments"><img src="img/logo_doc.png"/></a>.
+
+Les données étant au format .zip, on écrit :
+
+```{ojs}
+worldbank = FileAttachment("data/worldbank.zip").zip()
+```
+
+Ce fichier zip contient 3 fichiers.
+
+```{ojs}
+worldbank.filenames
+```
+
+Il existe plusieurs fonctions disponibles pout interpréter les formats de données. La fonction `.csv()`permet d'importer des données csv. La fonction `.xlsx()` permet d'importer des tableurs excel. La fonction `.json()` permet d'importer des données au format JSON. Ici, on va donc créer 3 jeux de données bien distincts.
+
+-   Les données
+
+```{ojs}
+data = worldbank.file("data.csv").csv()
+```
+
+-   Les métadonnées
+
+```{ojs}
+metadata = worldbank.file("metadata.csv").csv()
+```
+
+-   Le fond de carte (pays du monde)
+
+```{ojs}
+world = worldbank.file("world.json").json()
+```
+
+## 3.2 Visualiser les données attributaires
+
+Pour visualiser un tableau de données, on peut utiliser l'instruction `Inputs.table()`.
+
+```{ojs}
+Inputs.table(data)
+```
+
+```{ojs}
+Inputs.table(metadata)
+```
+
+On peut également combiner cet affichage par table avec la fonction `Inputs.search()`.
+
+```{ojs}
+viewof search = Inputs.search(data, { query: "Tunisia" })
+Inputs.table(search)
+```
+
+::: {.callout-tip collapse="true"}
+## Astuce
+
+Il est possible de combiner des chunks R et des chunks ojs grace à l'instruction `ojs_define()`
+
+Par exemple :
+
+```{r}
+# chunk r
+datafromr <- read.csv("data/data.csv")
+ojs_define(ojsdata = datafromr)
+```
+
+```{ojs}
+// chunk ojs
+Inputs.table(transpose(ojsdata))
+```
+
+Ca fonctionne également avec des objets spatiaux. Mais pour cela, il faut procéder de façon un peu différente.
+
+```{r}
+#| output: false
+# chunk r
+library("sf")
+library("geojsonsf")
+geomfromr <- st_read("data/world.gpkg")
+ojs_define(ojsgeom = sf_geojson(geomfromr))
+```
+
+```{ojs}
+// chunk ojs
+JSON.parse(ojsgeom) 
+```
+
+Voir détail : [neocarto.github.io/docs/notebooks/ojsdefine/](https://neocarto.github.io/docs/notebooks/ojsdefine/)
+:::
+
+## 3.3 Visualiser des géométries
+
+Le fond de carte est au format geoJSON
+
+```{ojs}
+//| echo: false
+world
+```
+
+Pour la visualiser, on a besoin d'importer une bibliothèque de cartographie. Ici, on choisit la bibliothèque `geoviz`
+
+<a href = "https://riatelab.github.io/geoviz/" target = "_BLANK"><img src="img/geoviz.jpeg" width="350px"/></img></a>
+
+On l'importe grace à l'instruction `require()`.
+
+```{ojs}
+viz = require("geoviz@0.6.0")
+```
+
+Pour visualiser simplement les géométries avec une couleur aléatoire, on tape :
+
+```{ojs}
+viz.path({data: world})
+```
+
+La carte est un peu grande. Nous pouvons la redimensionner en utilisant le parametre `svg_width`.
+
+```{ojs}
+viz.path({data: world, svg_width: 790})
+```
+
+::: {.callout-note title="Attention"}
+L'attribut `svg_width` modifie les parametres du containeur SVG contenant la couche. Nous verrons plus tard comment fonctionnement les containeurs.
+:::
+
+## 3.4 Personnaliser l'affichage
+
+La bibliothèque `geoviz` n'est pas seulement un viewer de couches SIG. C'est un outil pour réaliser des cartes vertorielles. Avec `geoviz`, les cartes sont dessinées au format SVG. Il est donc possible d'utiliser tous les attributs SVG pour modifier la carte. A une nuance près. Le JavaScript ne support pas les noms de variable avec un tiret. Il est donc d'usage de convertir ce tiret en *camelCase*. Par exemple : `stroke-width` donnera `strokeWidth`.
+
+Vous pouvez essayer :
+
+-   `fill` : couleur de fond
+-   `stroke` : couleur de contour
+-   `strokeWidth` : epaisseur des lignes
+-   `fillOpacity` : opacité du fond
+-   `strokeOpacity` : opacité du contour
+-   `strokeDashArray` : pointillés (par exemple \[2,3\])
+
+Bref, vous pouvez tout personnaliser comme sur une carte Inkscape ou Illustrator.
+
+```{ojs}
+viz.path({data: world, svg_width: 790, fill: "#d66bb3", strokeWidth:0.5})
+```
+
+Rappelez-vous qu'avec Observable, nous sommes dans un environnement interactif et réacif. On peut donc mettre en place des interactions pour personnaliser la carte. <a href="https://observablehq.com/documentation/inputs/overview"><img src="img/logo_doc.png"/></a>
+
+```{ojs}
+viewof colorfill = Inputs.color({label: "Fond", value: "#4682b4"})
+viewof colorstroke = Inputs.color({label: "Contour", value: "#FF0000"})
+viewof thickness = Inputs.range([0, 10], {step: 0.1, label: "Epaisseur", value:1})
+```
+
+```{ojs}
+viz.path({data: world, svg_width:790, fill: colorfill, stroke: colorstroke, strokeWidth: thickness})
+```
+
+## 4. Logiques et principe de la blibliothèque `geoviz`
+
+### 4.1 Documentation et exemples
+
+La documettaion de `geoviz` est disponible à l'adresse suivante : <a href="https://riatelab.github.io/geoviz/" target = "_BLANK">riatelab.github.io/geoviz</a>. Cliquez sur ce lien, et conservez précieusement la page pour pouvoir vous y referer à tout moment.
+
+<a href="https://riatelab.github.io/geoviz/" target = "_BLANK"><img src="img/geoviz_documentation.png" width="790px"/></a>
+
+Pour comprendre comment fonctionne cette bibliothèque, de nombreux exemples live sont également disponibles sur la plateforme de notebooks Observable.
+
+```{ojs}
+//| echo: false
+import { docs, previews } from "@neocartocnrs/geoviz-appendix"
+previews(docs, 120)
+```
+
+### 4.2. Les `marks`
+
+Au même titre que l'instruction `path`, la bibliothèque `geoviz` met à disposition un certain nombre de `marks` permetant de constituer une carte.
+
+Par exemple :
+
+-   `circle` : des cercles <a href="https://riatelab.github.io/geoviz/global.html#circle" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `square` : des carrés <a href="https://riatelab.github.io/geoviz/global.html#square" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `halfcircle` : des demis cercles <a href="https://riatelab.github.io/geoviz/global.html#halfcircle" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `spike` : des pointes <a href="https://riatelab.github.io/geoviz/global.html#spike" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `graticule` : lignes de latitude et longitude <a href="https://riatelab.github.io/geoviz/global.html#graticule" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `outline` : espace terrestre dans une projection donnée <a href="https://riatelab.github.io/geoviz/global.html#outline" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `tile` : tuiles raster <a href="https://riatelab.github.io/geoviz/global.html#header" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `header` : titre de la carte <a href="https://riatelab.github.io/geoviz/global.html#circle" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `footer` : pied de page (sources) <a href="https://riatelab.github.io/geoviz/global.html#footer" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `north`: fleche nord <a href="https://riatelab.github.io/geoviz/global.html#north" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `scalebar` : barre d'échelle <a href="https://riatelab.github.io/geoviz/global.html#scalebar" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+-   `text` : textes et labels <a href="https://riatelab.github.io/geoviz/global.html#text" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+
+On peut appeler ces `marks` directement.
+
+```{ojs}
+viz.circle({ r: 40, fill: "#38896F" })
+```
+
+```{ojs}
+viz.square({ side: 60, fill: "#38896F", angle: 45 })
+```
+
+Si on utiliser l'attribut `data`, alors, les marques sont placées au centre des unités géographiques. Par exemple
+
+```{ojs}
+viz.square({ data: world, svg_width: 790, side: 6, fill: "#38896F", angle: 45 })
+```
+
+```{ojs}
+viz.text({ data: world, svg_width: 785, text: "ISO3", fill: "#38896F" })
+```
+
+Mais la plupart du temps, on utilisera ces `marks` à l'interieur de conteneurs dans lesquels nous pourrons les superposer.
+
+### 4.3. Les `conteneurs`
+
+Dans `geoviz`, pour combiner différentes couches sur une carte, vous devez créer un conteneur SVG <a href="https://riatelab.github.io/geoviz/global.html#render"><img src="img/logo_exemple.png" target="_BLANK"/></a>. Ce conteneur est créé avec l'instruction `create()` <a href="https://riatelab.github.io/geoviz/global.html#create"  target = "_BLANK"><img src="img/logo_doc.png"/></a>. Il peut ensuite être affiché à l'aide de la fonction `render()` <a href="https://riatelab.github.io/geoviz/global.html#render"  target = "_BLANK"><img src="img/logo_doc.png"/></a>.
+
+::: callout-tip
+## Astuce
+
+Pour créer la carte dans une seule cellule, on met les instruction entre accolades
+:::
+
+```{ojs}
+{
+  let svg = viz.create({width: 790})
+  svg.path({data:world})
+  return svg.render()
+}
+```
+
+Pour bien fonctionner, le conteneur a besoin que vous definissiez une `projection` et/ou une emprise géographie (`domain`).
+
+::: callout-note
+Notez que dorénavant, c'est au niveau de la fonction `create()` que nous allons définir la taille de la carte.
+:::
+
+Recommençons.
+
+```{ojs}
+{
+  let svg = viz.create({domain: world, width: 790})
+  svg.path({data:world, fill :"#38896F"})
+  return svg.render()
+}
+```
+
+## 4.4 Les projections
+
+Dans l'ecosystème de `d3js` et `geoviz`, on utilise des fonctions de projections bien spécifiques dédiées à la représentation de données. elles sont réaparties dans 3 bibliothèques : `d3-geo` <a href="https://github.com/d3/d3-geo" target = "_BLANK"><img src="img/logo_doc.png"/></a>, `d3-geo-projection` <a href="https://github.com/d3/d3-geo-projection" target = "_BLANK"><img src="img/logo_doc.png"/></a> et `d3-geo-polygon` <a href="https://github.com/d3/d3-geo-polygon" target = "_BLANK"><img src="img/logo_doc.png"/></a>.
+
+On les charge de la façon suivante :
+
+```{ojs}
+d3 = require("d3", "d3-geo", "d3-geo-projection", "d3-geo-polygon")
+```
+
+Le principe est qu'on utilise en entrée toujours des géométries au format lat/lon qui sont projetées à la volée au moment de l'affichage.
+
+Par exemple :
+
+```{ojs}
+{
+  let svg = viz.create({domain: world, width: 790, projection: d3.geoNaturalEarth1()})
+  svg.path({data:world, fill :"#38896F"})
+  return svg.render()
+}
+```
+
+::: callout-note
+Notez que vous auriez aussi simplement pu écrire :
+
+``` js
+viz.path({data:world, fill :"#38896F", svg_width: 790, svg_projection: d3.geoNaturalEarth1()})
+```
+:::
+
+Avec les containeurs, on peut maintenant empiler les couches. En jouant avec les `marks` et les attributs SVG, on peut réaliser de très beaux templates cartographiques.
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: d3.geoAitoff() })
+  svg.outline()
+  svg.graticule({stroke: "white", step: 40})
+  svg.path({datum:world, fill :"white", fillOpacity:0.3})
+  svg.header({text: "Hello World"})
+  return svg.render()
+}
+```
+
+Grace aux `Inputs`, vous pouvez vous amuser à visualiser différentes projections.
+
+```{ojs}
+projections = [
+  { name: "Interrupted Sinusoidal", proj: d3.geoInterruptedSinusoidal() },
+  { name: "Gingery", proj: d3.geoGingery() },
+  { name: "Baker", proj: d3.geoBaker() },
+  { name: "PolyhedralWaterman", proj: d3.geoPolyhedralWaterman()  },     
+]
+```
+
+```{ojs}
+viewof projection = Inputs.select(projections, {
+  label: "Projection",
+  format: (x) => x.name
+})
+```
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: projection.proj})
+  svg.graticule({stroke :"#38896F", strokeWidth: 1.5, strokeDasharray:null, step:40, clipPath : svg.effect.clipPath()})
+  svg.path({datum:world, fill :"#38896F"})
+  svg.outline({stroke :"#38896F", fill:"none", strokeWidth: 2})
+  return svg.render()
+}
+```
+
+## 4.5 Zoom et Pan
+
+Dans le conteneur, avec l'attribut `zoomable` <a href="https://observablehq.com/@neocartocnrs/zooming"  target = "_BLANK"><img src="img/logo_exemple.png"/></a>, on va aussi pouvoir dire si on veut que la carte soit zoomable.
+
+Par exemple :
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: d3.geoBertin1953(), zoomable:true })
+  svg.outline()
+  svg.graticule({stroke: "white"})
+  svg.path({datum:world, fill :"white", fillOpacity:0.3})
+  return svg.render()
+}
+```
+
+Avec une projection Orthograpĥique et l'attribut`zoomable = "versor"`, vous pouvez aussi jouer sur le centre de projection pour faire tourner le globe.
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: d3.geoOrthographic().rotate([-30, -30]), zoomable:"versor" })
+  svg.outline()
+  svg.graticule({stroke: "white"})
+  svg.path({datum:world, fill :"white", fillOpacity:0.3})
+  return svg.render()
+}
+```
+
+Notez que `"versor"` sur n'importe quelle projection, ce qui peut être déroutant, mais aussi bien utile pour comprendre vraiment comment fonctionnent les projections cartographiques.
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: d3.geoEckert3(), zoomable:"versor" })
+  svg.outline()
+  svg.graticule({stroke: "white"})
+  svg.path({datum:world, fill :"white", fillOpacity:0.3})
+  return svg.render()
+}
+```
+
+## 4.6 Tuiles raster
+
+Comme les autres `marks`, les tuiles raster <a href="https://riatelab.github.io/geoviz/global.html#tile" target = "_BLANK"><img src="img/logo_doc.png"/></a> <a href="https://observablehq.com/@neocartocnrs/tile-mark" target = "_BLANK"><img src="img/logo_exemple.png"/></a> sont également zoomable.
+
+Les styles disponibles par défaut sont : "openstreetmap", "opentopomap", "worldterrain", "worldimagery", "worldStreet", "worldphysical", "shadedrelief", "stamenterrain", "cartodbvoyager", "stamentoner","stamentonerbackground","stamentonerlite","stamenwatercolor","hillshade","worldocean","natgeo" et "worldterrain"
+
+::: callout-caution
+## Attention
+
+Pour utiliser la mark `tile`, vous devez forcément utiliser la projection "mercator"
+:::
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: "mercator", zoomable:true })
+  svg.tile({url:"natgeo"})
+  svg.path({datum:world, fill :"none", stroke:"white"})
+  return svg.render()
+}
+```
+
+## 4.7 Infobulles
+
+Avec `geoviz`, vous pouvez ajouter des infobulles <a href="https://observablehq.com/@neocartocnrs/tooltip" target = "_BLANK"><img src="img/logo_exemple.png"/></a> sur n'importe quel objet. En utilisant `tip: true`, tous les champs sont affichés.
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: d3.geoNaturalEarth1()})
+  svg.path({data:world, fill :"#38896F", stroke:"white", strokeWidth:0.3, tip:true})
+  return svg.render()
+}
+```
+
+Mais tout est personnalisable
+
+```{ojs}
+{
+  let svg = viz.create({width: 790, projection: d3.geoNaturalEarth1()})
+  svg.path({data:world, fill :"#38896F", stroke:"white", strokeWidth:0.3, tip: `Ce pays est $NAMEfr et son code est : $ISO3`})
+  return svg.render()
+}
+```
+
+## 5 Cartographie statistique
+
+### 5.1. La jointure
+
+La première chose à faire ici est de réaliser une jointure entre les géométries et les données statistiques importées en haut de ce notebook depuis un fichier zip.
+
+Examinons à nouveau le tableau de données.
+
+```{ojs}
+Inputs.table(data)
+```
+
+Le tableau contient des informations à plusieurs dates. Il y a donc plusieurs fois le même identifiant (id) dans le tableau de données. La première étaoe consiste donc à selectionner une année.
+
+En JavaScript, on utilise l'instruction `filter`.
+
+```{ojs}
+data2020 = data.filter(d => d.year == 2020)
+Inputs.table(data2020)
+```
+
+::: callout-tip
+## Astuce
+
+Manipuler un tableau de données en JavaScript quand on l'habitude de le faire en R peut être déroutant. Mais vous avez la possibilité d'utiliser la bibliothèque `arquero` qui ressemble beaucoup à `dplyr`.
+
+Plus d'informations ici : [observablehq.com/\@neocartocnrs/les-tableaux-de-donnees](https://observablehq.com/@neocartocnrs/les-tableaux-de-donnees?collection=@neocartocnrs/observable-cest-quoi)
+:::
+
+Pour réaliser la jointure, on utilise l'instruction `viz.tool.merge()` <a href="https://riatelab.github.io/geoviz/global.html#tool/merge" target = "_BLANK"><img src="img/logo_doc.png"/></a>.
+
+```{ojs}
+jointure = viz.tool.merge({geom: world, geom_id: "ISO3", data: data2020, data_id:"id"})
+```
+
+La fonction renvoie le résultat de la jointure mais également un diagnostic pour évaluer la qualité de cette jointure.
+
+```{ojs}
+//| echo : false
+jointure
+```
+
+Le nouveau fond de carte est donc :
+
+```{ojs}
+world2020 = jointure.featureCollection
+```
+
+### 5.2. Symboles proportionnels
+
+Pour représenter des données quantitatives absolues, on utilise en cartographie des symboles qu'on fait varier de façon proprtionnelle. Pour cela, on utilisera la fonction `viz.plot()` <a href = "https://riatelab.github.io/geoviz/global.html#plot" target = "_BLANK"><img src="img/logo_doc.png"/></a> avec `type: "prop"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/prop" target = "_BLANK"><img src="img/logo_doc.png"/></a>. C'est un peu la même logique qu'avec `r::mapsf`.
+
+La carte peut se dessiner comme ceci :
+
+```{ojs}
+{
+let svg = viz.create({width: 790, domain: world2020})
+svg.plot({type: "base", data: world2020, fill: "#CCC"})
+svg.plot({type: "prop", data: world2020, var: "pop", fill:"#d47988", leg_pos:[10, 200]})
+return svg.render()
+}
+```
+
+### 5.3. Typologies
+
+Pour réaliser des typologies, on utilise également la fonction `plot()` avec `type: "typo"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/typo" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+
+```{ojs}
+{
+let svg = viz.create({width: 790, domain: world2020})
+svg.plot({type: "typo", data: world2020, var: "region", leg_pos:[10, 100]})
+return svg.render()
+}
+```
+
+De nombreuses palettes de couleurs sont disponibles dans dicopal <a href = "https://observablehq.com/@neocartocnrs/dicopal-library" target = "_BLANK"><img src="img/logo_exemple.png"/></a>
+
+### 5.4 Carte choroplethe
+
+Pour réaliser une carte choroplèthe, on utilisera le `type: "choro"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/choro" target = "_BLANK"><img src="img/logo_doc.png"/></a>
+
+```{ojs}
+{
+let svg = viz.create({width: 790, domain: world2020})
+svg.plot({type: "choro", data: world2020, var: "gdppc", leg_pos:[10, 100]})
+return svg.render()
+}
+```
+
+Avec `method`, vous pouvez changer la méthode de discretisation : 'quantile', 'q6', 'equal', 'jenks', 'msd', 'geometric', 'headtail', 'pretty', 'arithmetic' ou 'nestedmeans'.
+
+Avec `nb`, vous pouvez changer le nombre de classes.
+
+Avec `colors`, vous pouvez changer la palette.
+
+### 5.5 Combinsaisons
+
+Avec les types "propchoro" <a href = "https://riatelab.github.io/geoviz/global.html#plot/propchoro" target = "_BLANK"><img src="img/logo_doc.png"/></a> et "proptypo" <a href = "https://riatelab.github.io/geoviz/global.html#plot/proptypo" target = "_BLANK"><img src="img/logo_doc.png"/></a> vous pouvez faire des combinaisons graphiques.
+
+Par exemple
+
+```{ojs}
+{
+let svg = viz.create({width: 790, domain: world2020})
+svg.plot({type: "propchoro", data: world2020, var1: "pop", var2: "gdppc"})
+return svg.render()
+}
+```
+
+### 5.6 Tout est paremetrable/configurable
+
+Rappelez-vous également que nous sommes dans un environnement réactif et que vous pouvez proposer des interactions pour modifier la carte.
+
+```{ojs}
+viewof title = Inputs.textarea({label: "Titre de la carte", placeholder: "Titre..."})
+viewof k = Inputs.range([10, 70], {step: 1, label: "Rayon du plus grand cercle"})
+viewof toggle = Inputs.toggle({label: "Écarter les cercles ?", value: false})
+```
+
+```{ojs}
+{
+let svg = viz.create({width:790, domain: world2020})
+svg.path({datum: world2020, fill:"#CCC"})
+svg.plot({type:"prop", data: world2020, var: "pop", k:k, fill:"#e02d51", dodge: toggle, leg_pos:[10, 200] })
+svg.header({text: title })
+return svg.render()
+}
+```
+
+Tout est complètement paramétrable.
+
+```{ojs}
+{
+  let svg = viz.create({ projection: d3.geoOrthographic().rotate([-50,-50]), zoomable: "versor", width:790 });
+  svg.plot({ type: "outline", fill: svg.effect.radialGradient() });
+  svg.plot({
+    type: "graticule",
+    stroke: "white",
+    step: 40,
+    strokeWidth: 2,
+    strokeOpacity: 0.3
+  });
+  svg.plot({ type: "typo", data: world2020, var: "region", stroke: "none", legend: false });
+  svg.plot({
+    type: "prop",
+    symbol: "square",
+    data: world2020,
+    var: "pop",
+    fill: "red",
+    fillOpacity:0.8,
+    leg_type: "nested",
+    leg_values_factor: 1 / 1000000,
+    leg_pos: [20, 20],
+    leg_frame:true,
+    leg_title: "Nombre d'habitants",
+    leg_subtitle: "(en millions)",
+    tip: `$name ($ISO3)`,
+    tipstyle: {
+    fontSize: 20,
+    fill: "white",
+    background: "#38896F",
+  }
+  });
+  return svg.render();
+}
+```
+
+## 6. Réalisation d'une carte animée
+
+On importe un widget depuis la plateforme de notebooks Observable.
+
+```{ojs}
+import {Scrubber} from "@mbostock/scrubber"
+```
+
+Puis on réalise la carte
+
+```{ojs}
+// Inputs
+viewof annees = Scrubber(d3.range(1960,2023), {autoplay: false})
+// Tri des données
+mydata = data.filter(d => d.year == annees)
+mybasemap = viz.tool.merge({geom: world, geom_id: "ISO3", data: mydata, data_id:"id"}).featureCollection
+// Carte
+{
+  let svg = viz.create({width:790, projection: d3.geoBertin1953()})
+  svg.outline()
+  svg.graticule({stroke: "white", step: 40})
+  svg.path({datum: world, fill:"white", fillOpacity:0.3})
+  svg.header({text: `Population en ${annees}`})
+  svg.plot({type:"prop", data: mybasemap,  var: "pop", fill:"red", fixmax: 1417173173, tip:`$name\n$pop`})
+  return svg.render()
+}
+```
+
+## 7. Les dashboards
+
+Depuis la version 1.4, Quarto propose des mises en page à la façon de dashboards. Tout ce que nous avons vu précédemment est donc facilement mobilisable pour réaliser une application complète. Queleques exemples sont disponibles sur le site de Quarto.
+
+<a href = "https://quarto.org/docs/dashboards/examples/" target = "_BLANK"><img src="img/dashboards.png"/></img></a>
+
+## 8. Aller plus loin
+
+<a href = "https://observablehq.com/collection/@neocartocnrs/observable-cest-quoi" target = "_BLANK"><img src="img/obsgeo.png"/></img></a>
