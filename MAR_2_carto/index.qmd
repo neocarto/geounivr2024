@@ -34,7 +34,7 @@ Ce support est très largement inspiré du manuel [`Cartographie avec R`](https:
 - Créer un nouveau repertoire de travail.
 - Ouvrez Rstudio.
 - Créez un nouveau projet et placez-le dans votre dossier.
-- Créez un nouveau document Quarto (et laissez les paramètre par defaut)
+- Créez un nouveau script R (ou un document Quarto)
 
 Si vous n'avez pas ces packages listés plus haut, vous pouvez les installer en tapant la ligne suivante dans la console.
 
@@ -135,12 +135,7 @@ world <- st_transform(st_read("data/afrique.gpkg", layer = "world"),"epsg:3857")
 places <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_populated_places"),"epsg:3857")
 rail <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_railroads"),"epsg:3857")
 roads <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_roads"),"epsg:3857")
-
-
-
 ```
-
-Le tout est téléchargeable [ici](). // TODO
 
 # 1 - cartographie avec `sf`
 
@@ -179,16 +174,14 @@ plot(africa$geometry)
 
 ### Marges en emprise
 
-Dans les affichages précédents, on constate qu'il y a beaucoup d'espace perdu autour de la carte. On peut modifier les marges en modifiant les parametres graphiques. 
-
+Dans les affichages précédents, on constate qu'il y a beaucoup d'espace perdu autour de la carte. On peut modifier les marges en modifiant les parametres graphiques. `mar` permet de mettre les marges à zero. `xaxs='i'`, `yaxs='i'` permettent de supprimer les espaces residuels. 
 
 
 ```{r}
 par(mar = c(0, 0, 0, 0),  xaxs='i', yaxs='i', bg = "#F1F3F5") # c(bottom, left, top, right))
 plot(st_geometry(africa))
 ```
-
-Il est également possible de modifier la taille des figures. Soit dans le yaml en haut du document. Soit directement dans le chunk.
+Quand on travaille dans un document quarto, il est également possible de modifier la taille des figures avec les parametres `fig-height` et `fig-width`. Soit dans le yaml en haut du document. Soit directement dans le chunk.
 
 Ici, on détermine le bon ratio entre la hauteur et la largeur.
 
@@ -207,6 +200,7 @@ Puis on écrit
 #| fig-width: 6.36
 ~~~
 
+Et on obtient une carte qui prend bien tout l'espace souhaité.
 
 ```{r}
 #| fig-height: 6
@@ -225,7 +219,7 @@ plot(st_geometry(world), xlim = c(bb$xmin, bb$xmax), ylim = c(bb$ymin, bb$ymax))
 
 ### Paramétrer le style
 
-De nombreux paramètres pertmettent de personnaliser le style de la carte. Nous en citons ici quelques exemples.
+De nombreux paramètres permettent de personnaliser le style de la carte. Nous en citons ici quelques exemples.
 
 - Couleur de fond : `col`
 - Couleur de contour : `border`
@@ -376,7 +370,7 @@ Les fonctions de cartographies dans les fonctionnalités de base de `sf` sont tr
 
 <img src = "img/mapsf.png" width ="250px"></img>
 
-Pour chaque type de carte, plusieurs paramètres permettent de personnaliser la représentation cartographique. Ces paramètres sont les mêmes que ceux que l’on retrouve dans les logiciels de SIG ou de cartographie usuels. `mapsf` est le successeur du package cartography. Si vous avez l'habitude d'utiliser ce dernier, nous vous conseillons vivement de passer à `mapsf`?
+Pour chaque type de carte, plusieurs paramètres permettent de personnaliser la représentation cartographique. Ces paramètres sont les mêmes que ceux que l’on retrouve dans les logiciels de SIG ou de cartographie usuels. `mapsf` est le successeur du package `cartography`. Si vous avez l'habitude d'utiliser ce dernier, nous vous conseillons vivement d'utiliser dorénavant `mapsf`.
 
 On charge le package
 
@@ -384,13 +378,15 @@ On charge le package
 library("mapsf")
 ```
 
-## Documentation et support
+## Documentation et supports
 
 De nombreux documents permettent de prendre en main ce package. 
 
 - Le [site web](https://riatelab.github.io/mapsf)
 - La [feuille de triche](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)
-- Le manuel [cartographie avec R](https://rcarto.github.io/cartographie_avec_r/))
+- Le manuel [cartographie avec R](https://rcarto.github.io/cartographie_avec_r/)
+
+Et surtout, il faut aller voir dans la documentation du package directement dans RStudio. Vous y decouvrirez une magnifique vignette. 
 
 ## Afficher un fond de carte
 
@@ -438,7 +434,7 @@ mf_title(txt = "Population totale")
 ## A vous de jouer
 
 Réaliser une carte sur un indicateur de votre choix.
-Si besoin, vous pouvez aller chercher d'autres indicateurs brace au package `wbstats`
+Si besoin, vous pouvez aller chercher d'autres indicateurs grace au package `wbstats`
 
 
 ```{r}
@@ -476,9 +472,6 @@ mf_map(x = africa_birds,
        leg_title = "Nombre d'oiseaux\nmenacés en 2018",
        inches	= 0.3)
 ```
-```
-
-
 
 # 3 - Cartographie avancée
 
@@ -597,7 +590,9 @@ m3
 
 ## Au delà de R
 
-Avec Quarto, il est également possible de créer dans Rstudio, des cartes thématiques interactives pour le web. Pour celles et ceux qui le souhaitent, c'est ce que nous ferons vendredi matin. 
+Avec Quarto, il est également possible de créer dans Rstudio, des cartes thématiques interactives pour le 
+
+**Pour celles et ceux qui le souhaitent, c'est ce que nous ferons vendredi matin**. 
 
 ```{r}
 #| echo: false
@@ -611,6 +606,7 @@ ojs_define(a = sf_geojson(africa))
 viz = require("geoviz@0.6")
 world = JSON.parse(w) 
 africa = JSON.parse(a)
+viewof size = Inputs.range([300, 790], {label: "Taille de la carte", value: 790, step: 1})
 viewof k = Inputs.range([10, 100], {label: "Taille du plus gros cercle", value: 50, step: 1})
 viewof dodge = Inputs.toggle({label: "Écarter les cercles", value: false})
 viewof leg_type = Inputs.radio(["separate", "nested"], {
@@ -618,7 +614,7 @@ viewof leg_type = Inputs.radio(["separate", "nested"], {
   value: "separate"
 })
 
-svg = viz.create({domain: africa, margin: 30, background:"#B5DFFD", width : 790, zoomable:true})
+svg = viz.create({domain: africa, margin: 30, background:"#B5DFFD", width : size, zoomable:true})
 header = svg.header({text: "Population en Afrique, 2020", background_fill:"#3c799e", fill: "white" })
 path = svg.path({datum: world, fill:"white", fillOpacity:0.3})
 afr = svg.path({data: africa, fill:"#3c799e", strokeWidth:0.5, filter: svg.effect.shadow()})
