@@ -27,12 +27,13 @@ Ce support est très largement inspiré du manuel [`Cartographie avec R`](https:
 - `cartogram` (facultatif)
 - `leaflet` (facultatif)
 - `mapview` (facultatif)
+- `wbstats` (facultatif)
 
 Si vous n'avez pas ces packages, vous pouvez les installer en executant la ligne suivante dans la console.
 
 ```{r}
 #| eval: false
-install.packages(c('sf', 'mapsf', 'cartogram', 'leaflet', 'mapview'))
+install.packages(c('sf', 'mapsf', 'cartogram', 'leaflet', 'mapview', 'wbstats'))
 ```
 
 ## Import et mise en forme des données
@@ -412,6 +413,51 @@ mf_title(txt = "Population totale")
 
 ## Habillage et mise en page
 
+## A vous de jouer
+
+Réaliser une carte sur un indicateur de votre choix.
+Si besoin, vous pouvez aller chercher d'autres indicateurs brace au package `wbstats`
+
+
+```{r}
+library(wbstats)
+```
+
+Par exemple
+
+```{r}
+wb_search(pattern = "Bird")
+oiseaux_menaces <- wb_data("EN.BIR.THRD.NO", start_date = 2018, end_date = 2018)
+head(oiseaux_menaces)
+africa_birds <-  merge(
+  x = geom[,"ISO3"],  
+  y = oiseaux_menaces,  
+  by.x = "ISO3",
+  by.y = "iso3c",
+  all.x = TRUE   
+)
+```
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = NA, col = NA)
+mf_map(x = world, border = "white", col = "#CCCCCC50", lwd = 0.5, add = TRUE)
+mf_map(x = africa, border = "white", col = "#6893d9", lwd = 0.5, add = TRUE)
+mf_map(x = africa_birds,
+       var = "EN.BIR.THRD.NO",
+       type = "prop",
+       symbol = "square",
+       border = "white",
+       col = "#FF000080",
+       leg_title = "Nombre d'oiseaux\nmenacés en 2018",
+       inches	= 0.3)
+```
+```
+
+
+
 # 3 - Cartographie avancée
 
 ## Cartograms
@@ -468,6 +514,8 @@ mf_inset_on(africa, cex = .2, pos = "topleft")
 mf_map(africa, lwd = .5, border = "white")
 mf_inset_off()
 ```
+
+## Carroyage
 
 ## Discontinuités
 

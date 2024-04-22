@@ -29,16 +29,38 @@ Ce support est très largement inspiré du manuel [`Cartographie avec R`](https:
 - `mapview` (facultatif)
 - `wbstats` (facultatif)
 
-Si vous n'avez pas ces packages, vous pouvez les installer en executant la ligne suivante dans la console.
+## Initiez un nouveau projet
+
+- Créer un nouveau repertoire de travail.
+- Ouvrez Rstudio.
+- Créez un nouveau projet et placez-le dans votre dossier.
+- Créez un nouveau document Quarto (et laissez les paramètre par defaut)
+
+Si vous n'avez pas ces packages listés plus haut, vous pouvez les installer en tapant la ligne suivante dans la console.
 
 ```{r}
 #| eval: false
 install.packages(c('sf', 'mapsf', 'cartogram', 'leaflet', 'mapview', 'wbstats'))
 ```
 
-## Import et mise en forme des données
+Pour gagner du temps, seuls `sf` et `mapsf` sont absolument nécéssaires. Vous pouvez donc installer uniquement ces deux là.
+
+```{r}
+#| eval: false
+install.packages(c('sf', 'mapsf'))
+```
 
 Dans cette séquence, nous travaillons à l'échelle des pays africains. Les données statistiques sont issues de la base de donnée de la banque mondiale.
+
+Les données sont disponibles au téléchargement ici. 
+
+<a href = "https://github.com/neocarto/geounivr2024/raw/main/MAR_2_carto/data/afrique.zip"><img src="img/download.png" height="50px"/><img /></a>
+
+Téléchargez-les, dézippez-les et placez-les dans un répertoire **data**.
+
+Tout est prêt 😎
+
+## Import et mise en forme des données
 
 1 - Import des géométries
 

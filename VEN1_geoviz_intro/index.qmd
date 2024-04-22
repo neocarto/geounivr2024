@@ -149,10 +149,9 @@ Ce code
 
 donne ceci :
 
+
 <svg viewBox="0 0 1000 100" xmlns="http://www.w3.org/2000/svg">
-
 <rect x="0" y="0" width="100px" height="100px" fill="#F2CD3B" stroke="#06000C"/>
-
 </svg>
 
 Attention, les coordonnées \[0,0\] sont en haut à gauche.
@@ -793,3 +792,5 @@ chart = SankeyChart({
 ```
 
 # Travaux pratiques
+
+👉 [let's go](https://neocarto.github.io/geounivr2024/VEN1_geoviz_TP/docs/index.html)

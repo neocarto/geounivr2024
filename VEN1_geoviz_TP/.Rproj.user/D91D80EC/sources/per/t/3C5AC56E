@@ -1,9 +1,9 @@
 {
     "id": "3C5AC56E",
-    "path": "~/Gitlab/formation-tunisie/VEN1_geoviz_TP/index.qmd",
+    "path": "~/Github/geounivr2024/VEN1_geoviz_TP/index.qmd",
     "project_path": "index.qmd",
     "type": "quarto_markdown",
-    "hash": "3061506137",
+    "hash": "2595645605",
     "contents": "",
     "dirty": false,
     "created": 1712752802807.0,
@@ -12,14 +12,16 @@
     "properties": {
         "chunk_output_type": "console",
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "71,127",
+        "scrollLine": "685"
     },
     "folds": "",
-    "lastKnownWriteTime": 1712671148,
+    "lastKnownWriteTime": 1713795005,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1712671148,
+    "last_content_update": 1713795005,
     "read_only": false,
     "read_only_alternatives": []
 }

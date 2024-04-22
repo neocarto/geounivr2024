@@ -69,7 +69,7 @@ chart = {
 
 # 1. Introduction
 
-Avant de commencer, merci de regarder cette <a href ="" target = "_BLANK">introduction</a> sur le Web, son histoire, ses langages et l'Observable JavaScript. C'est un prérequis pour comprendre la suite.
+Avant de commencer, merci de regarder cette <a href ="https://neocarto.github.io/geounivr2024/VEN1_geoviz_intro/docs/index.html" target = "_BLANK">introduction</a> sur le Web, son histoire, ses langages et l'Observable JavaScript. C'est un prérequis pour comprendre la suite.
 
 # 2. Démarrer avec Quarto
 
@@ -216,7 +216,7 @@ Le jeu de données utilisé est issu de la [banque mondiale](https://data.worldb
 
 Téléchargez les données et placez-les-les dans votre repertoire **data**.
 
-<a href = "https://gitlab.huma-num.fr/rysebaert/formation-tunisie/-/raw/main/geoviz_TP/data/worldbank.zip"><img src="img/download.png" height="50px"/><img /></a>
+<a href = "https://github.com/neocarto/geounivr2024/raw/main/VEN1_geoviz_TP/data/worldbank.zip"><img src="img/download.png" height="50px"/><img /></a>
 
 ## 3.1 Import des données
 
@@ -435,7 +435,7 @@ Mais la plupart du temps, on utilisera ces `marks` à l'interieur de conteneurs 
 
 ### 4.3. Les `conteneurs`
 
-Dans `geoviz`, pour combiner différentes couches sur une carte, vous devez créer un conteneur SVG <a href="https://riatelab.github.io/geoviz/global.html#render"><img src="img/logo_exemple.png" target="_BLANK"/></a>. Ce conteneur est créé avec l'instruction `create()` <a href="https://riatelab.github.io/geoviz/global.html#create"  target = "_BLANK"><img src="img/logo_doc.png"/></a>. Il peut ensuite être affiché à l'aide de la fonction `render()` <a href="https://riatelab.github.io/geoviz/global.html#render"  target = "_BLANK"><img src="img/logo_doc.png"/></a>.
+Dans `geoviz`, pour combiner différentes couches sur une carte, vous devez créer un conteneur SVG <a href="https://observablehq.com/@neocartocnrs/containers"><img src="img/logo_exemple.png" target="_BLANK"/></a>. Ce conteneur est créé avec l'instruction `create()` <a href="https://riatelab.github.io/geoviz/global.html#create"  target = "_BLANK"><img src="img/logo_doc.png"/></a>. Il peut ensuite être affiché à l'aide de la fonction `render()` <a href="https://riatelab.github.io/geoviz/global.html#render"  target = "_BLANK"><img src="img/logo_doc.png"/></a>.
 
 ::: callout-tip
 ## Astuce
@@ -445,7 +445,7 @@ Pour créer la carte dans une seule cellule, on met les instruction entre accola
 
 ```{ojs}
 {
-  let svg = viz.create({width: 790})
+  let svg = viz.create()
   svg.path({data:world})
   return svg.render()
 }
@@ -554,7 +554,7 @@ Par exemple :
 }
 ```
 
-Avec une projection Orthograpĥique et l'attribut`zoomable = "versor"`, vous pouvez aussi jouer sur le centre de projection pour faire tourner le globe.
+Avec une projection orthographique et l'attribut`zoomable = "versor"`, vous pouvez aussi jouer sur le centre de projection pour faire tourner le globe.
 
 ```{ojs}
 {
@@ -566,7 +566,7 @@ Avec une projection Orthograpĥique et l'attribut`zoomable = "versor"`, vous pou
 }
 ```
 
-Notez que `"versor"` sur n'importe quelle projection, ce qui peut être déroutant, mais aussi bien utile pour comprendre vraiment comment fonctionnent les projections cartographiques.
+Notez que `"versor"` s'applique sur n'importe quelle projection, ce qui peut être déroutant, mais aussi bien utile pour comprendre vraiment comment fonctionnent les projections cartographiques.
 
 ```{ojs}
 {
@@ -820,7 +820,7 @@ mybasemap = viz.tool.merge({geom: world, geom_id: "ISO3", data: mydata, data_id:
 
 Depuis la version 1.4, Quarto propose des mises en page à la façon de dashboards. Tout ce que nous avons vu précédemment est donc facilement mobilisable pour réaliser une application complète. Queleques exemples sont disponibles sur le site de Quarto.
 
-<a href = "https://quarto.org/docs/dashboards/examples/" target = "_BLANK"><img src="img/dashboards.png"/></img></a>
+<a href = "https://quarto.org/docs/dashboards/examples/" target = "_BLANK"><img src="img/dashboards.png" width = 790></img></a>
 
 ## 8. Aller plus loin
 
