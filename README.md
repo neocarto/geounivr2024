@@ -1,6 +1,6 @@
 # GEO UNIV'R Tunisie 2024
 
-Work in progress....
+- Voir neocarto.github.io/geounivr2024
 
 ## Liste des cours et supports sur la cartographie
 
