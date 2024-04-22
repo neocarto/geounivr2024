@@ -20,6 +20,6 @@ Cours d'introduction. Cartographier pour le Web avec quarto.
 
 Travaux pratiques. Cartographier pour le Web avec quarto {ojs} et la bibliothèque JavaScrip geoviz
 
-- - <a href = "https://neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard/index.html" target = "BLANK">VEN1_geoviz_dashboard</a>
+- <a href = "https://neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard/index.html" target = "BLANK">VEN1_geoviz_dashboard</a>
 
 Un exemple de dashboard avec Quarto
