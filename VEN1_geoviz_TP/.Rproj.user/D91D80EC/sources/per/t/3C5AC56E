@@ -3,7 +3,7 @@
     "path": "~/Github/geounivr2024/VEN1_geoviz_TP/index.qmd",
     "project_path": "index.qmd",
     "type": "quarto_markdown",
-    "hash": "2595645605",
+    "hash": "2587005922",
     "contents": "",
     "dirty": false,
     "created": 1712752802807.0,
@@ -13,15 +13,15 @@
         "chunk_output_type": "console",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "71,127",
-        "scrollLine": "685"
+        "cursorPosition": "824,23",
+        "scrollLine": "805"
     },
     "folds": "",
-    "lastKnownWriteTime": 1713795005,
+    "lastKnownWriteTime": 1713947783,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1713795005,
+    "last_content_update": 1713947783337,
     "read_only": false,
     "read_only_alternatives": []
 }

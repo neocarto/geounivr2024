@@ -31,10 +31,10 @@ Ce support est très largement inspiré du manuel [`Cartographie avec R`](https:
 
 ## Initiez un nouveau projet
 
-- Créer un nouveau repertoire de travail.
+- Créez un nouveau repertoire de travail.
 - Ouvrez Rstudio.
 - Créez un nouveau projet et placez-le dans votre dossier.
-- Créez un nouveau script R (ou un document Quarto)
+- Créez un nouveau document Quarto (ou eventuellement un simple script R si vous préférez)
 
 Si vous n'avez pas ces packages listés plus haut, vous pouvez les installer en tapant la ligne suivante dans la console.
 
@@ -50,7 +50,7 @@ Pour gagner du temps, seuls `sf` et `mapsf` sont absolument nécéssaires. Vous 
 install.packages(c('sf', 'mapsf'))
 ```
 
-Dans cette séquence, nous travaillons à l'échelle des pays africains. Les données statistiques sont issues de la base de donnée de la banque mondiale.
+Dans cette séquence, nous travaillons à l'échelle des pays africains. Les données statistiques sont issues de la base de données de la banque mondiale.
 
 Les données sont disponibles au téléchargement ici. 
 
@@ -125,7 +125,9 @@ africa <-  merge(
 )
 ```
 
-Et quelques couches additionnelles
+On dispose maintenant du Spatial*DataFrame `africa` qui contient à la fois des données et des géométries. 
+
+Et on ajoute quelques couches additionnelles
 
 ```{r}
 #| echo: true
@@ -139,7 +141,7 @@ roads <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_roads"),"epsg
 
 # 1 - cartographie avec `sf`
 
-Grâce au package `sf`, la fonction `plot()` appliquée à un Spatial*DataFrame permet de l'afficher comme n'importe quel graphique.
+Grâce au package `sf`, la fonction `plot()` ets étendue et permet l'afficher d'un Spatial*DataFrame comme n'importe quel graphique.
 
 ### Comportement par defaut
 
@@ -298,7 +300,7 @@ plot(st_geometry(africa), col= "white", axes = TRUE, graticule = TRUE, main = "H
 
 ## Effet d'ombrage
 
-Avec R, il est aisé de translater une géoémétrie pour créer un effet d'ombrage.
+Avec R, il est aisé de translater une géométrie pour créer un effet d'ombrage.
 
 ```{r}
 #| warning: false
@@ -316,6 +318,25 @@ plot(st_geometry(africa) , col = "#5B89A3", border = NA, add = TRUE)
 On peut faire varier la transparence d'une couleur au fromat hexadecimal en ajouter un nombre de 00 à 99 à la fin du code. Par exemple `#827e6c60` applique une opacité de 60% à la couleur `#827e6c`.
 
 :::
+
+On peut même imaginer cet ombrage en dégardé avec une boucle
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+
+delta <- 20000
+nb <- 15
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(africa) , col = NA, border = NA)
+for (i in 1:nb) {
+plot(st_geometry(africa) + c(i * delta,-i * delta), col = "#827e6c20", border = NA, add = TRUE)
+}
+plot(st_geometry(africa) , col = "#5B89A3", border = NA, add = TRUE)
+```
+
+
 
 ## Cartographie thématique
 
@@ -390,7 +411,16 @@ Et surtout, il faut aller voir dans la documentation du package directement dans
 
 ## Afficher un fond de carte
 
-La fonction `mf_map()` est la fonction centrale du package mapsf. Elle permet de réaliser la plupart des représentations usuelles en cartographie. Par défaut, elle permet d'afficher un fond de carte.
+La fonction `mf_map()` est la fonction centrale du package mapsf. Elle remplace la fonction *plot*. Elle permet de réaliser la plupart des représentations usuelles en cartographie. Par défaut, elle permet d'afficher un fond de carte. La fonction `mf_title()` permet d'ajouter un titre à la place de *main*.
+
+::: {.callout-tip}
+
+## Astuce
+
+En affichant une première couche avec `border = NA` et `col = NA`, on peut ajouter un calque vide pour fixer l'emprise de la carte
+
+:::
+
 
 
 ```{r}
@@ -403,6 +433,14 @@ mf_map(x = africa, border = "white", col = "#6893d9", lwd = 0.5, add = TRUE)
 mf_map(x = places, pch = 20, cex = .7, col = "darkred", add = TRUE)
 mf_title(txt = "L'Afrique")
 ```
+
+::: {.callout-tip}
+
+## Astuce
+
+Pour determiner la taille de la figure, vous pouvez utiliser la fonction `mf_get_ratio()`
+
+:::
 
 ## Symboles proportionnels
 
@@ -423,17 +461,382 @@ mf_map(x = africa,
 mf_title(txt = "Population totale")
 ```
 
+::: {.callout-tip}
+
+## Astuce
+
+Pour dessiner des carrés au lieu des cercles, vous pouvez utiliser `symbol = "square"`
+
+:::
+
+
+## Symboles gradués
+
+Avec le type `"grad"`, vous pouvez réaliser la même carte avec des symboles gradués (ce qui dans le cas de figure ici, est moins efficace). Pour cela, vous devez choisir un nombre de classes (`nbreaks`) et une méthode de discretisation (`breaks`).
+
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_map(x = africa,
+       var = "pop",
+       type = "grad",
+       nbreaks = 5,
+       method = "quantile",
+       border = "white",
+       col = "#FF000080",
+       leg_title = "Nombre d'habitants\nen 2020",
+       inches	= 0.4)
+mf_title(txt = "Population totale (classes de tailles)")
+```
+
 ## Carte choroplèthe
+
+Pour représenter des données quantitatives relatives (ratio, indices, echelles...), on utilisera la plupart du temps des dégradés de couleurs. Dans mapsf, cela s'effectue avec le type `"choro"`. Comme précédement, les paramètres `nbreaks` et `breaks` permetent de parametrer les discretisations. 
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa,
+       var = "gdppc",
+       type = "choro",
+       nbreaks = 5,
+       border = "white",
+       leg_title = "PIB par habitant\n(US$ courants)",
+       inches	= 0.4)
+mf_title(txt = "Richesse des pays d'Anfrique en 2020")
+```
+
+
+Par défaut, ma méthode de discretisation est la méthode des quantiles. Elle s'adapte donc à n'importe quelle distribution de données. Mais avant de réaliser une carte choroplethe, il est préférable d'étudier d'abord la distribution statistique de la variable que l’on souhaite cartographier. La fonction `mf_distr()` permet de visualiser cette distributions.
+
+```{r}
+mf_distr(africa$gdppc)
+```
+
+Iii, la serie est dissymétrique à gauche, on peut donc opter plutôt pour la méthode `"geom"` qui est adaptée à ce type de distribution (les méthodes disponibles sont :  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", "jenks", "dpih", "q6", "geom", "arith", "em" or "msd").
+
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa,
+       var = "gdppc",
+       type = "choro",
+       breaks = "geom",
+       nbreaks = 4,
+       border = "white",
+       leg_title = "PIB par habitant\n(US$ courants)",
+       inches	= 0.4)
+mf_title(txt = "Richesse des pays d'Afrique en 2020 (method = 'geom')")
+```
+
+Pour canger les couleurs, vous pouvez renseigner une palette de couleur avec l'argument  `pal` . par exemple : 
+
+```{r}
+#| eval: false
+pal = "Magenta"
+```
+
+![](img/palettes.svg)
+
+Si vous le souhaitez, vous pouvez aussi choisir vos propres couleurs.
+
+```{r}
+#| eval: false
+pal = c("#F3CAD2", "#E08BB1", "#AF4F91", "#6D1C68")
+```
+
+Ou créer une palette sur mesure avec la fonction `mf_get_pal()`.
+
+
+```{r}
+#| eval: false
+pal = mf_get_pal(n = c(6,3), palette = c("Burg", "Teal"))
+```
 
 ## Carte de typologie
 
+Pour cartographier des données qualitatives, on utilise `type = "typo"`.
+
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa,
+       var = "region",
+       type = "typo",
+       breaks = "geom",
+       border = "white",
+       inches	= 0.4)
+mf_title(txt = "Les grandes régions d'Afrique")
+```
+
+::: {.callout-tip}
+
+## Astuce
+
+L’argument `val_order` sert à ordonner les modalités dans la légende. Par exemple : 
+
+```{r}
+#| eval: false
+val_order = c("Northern Africa", "Eastern Africa", "Western Africa", "Middle Africa", "Southern Africa")
+```
+
+:::
+
 ## Combinaisons
 
-## Habillage et mise en page
+Pour réaliser des cartes combinant deux variables, il est possible de supperpoer une carte choroplethe et une carte de stock. Par exemple : 
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa,
+       var = "gdppc",
+       type = "choro",
+       nbreaks = 5,
+       border = "white",
+       leg_pos = "topleft",
+       leg_title = "PIB par habitant\n(US$ courants)",
+       inches	= 0.4)
+mf_map(x = africa,
+       var = "pop",
+       type = "prop",
+       border = "black",
+       leg_pos = "bottomleft",
+       col = NA,
+       leg_title = "Nombre d'habitants\nen 2020",
+       inches	= 0.4)
+mf_title(txt = "Population et richesse en Agfrique")
+```
+
+Mais vous pouvez aussi utiliser le types `"prop_choro"` et `"prop_typo". Dans ce cas, les choses se présentent comme ceci : 
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_map(x = africa,
+       var = c("pop","gdppc"),
+       type = "prop_choro",
+       nbreaks = 5,
+       border = "white",
+       leg_pos = c("bottomleft","topleft"),
+       leg_title = c("Nombre d'habitants\nen 2020", "PIB par habitant\n(US$ courants)"),
+       inches	= 0.4)
+```
+
+## Elements d'habillage
+
+La package mapsf pemet d'ajouter plsueiurs éléments d'habillage.
+
+- `mf_title()` permet d'ajouter un titre
+- `mf_credits()` permet d'afficher la source
+- `mf_scale()` ajoute une echelle
+- `mf_arrow()` ajoute une orientation.
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_title(txt = "Population totale")
+mf_credits(txt = "Source : Banque mondiale, 2024")
+mf_scale()
+mf_arrow()
+```
+
+Tous ces éléments sont personnalisables.
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_title(txt = "Population totale", pos = "center", tab = FALSE, bg = "#6888ba")
+mf_credits(txt = "Source : Banque mondiale, 2024", pos = "bottomright", cex = 1)
+mf_scale(col = "red", scale_units = "mi", pos = "bottomleft")
+mf_arrow(pos = "topright")
+```
+
+::: {.callout-tip}
+
+## Astuce
+
+Tous ces élements peuvent être regroupés dans la fonction `mf_layout()`
+
+```{r}
+#| eval: false
+mf_layout(
+  title = "L'AfRique",
+  credits = "Banque mondiale, 2024",
+  arrow = TRUE, 
+  scale = TRUE
+)
+```
+
+:::
+
+Avec `mf_shadow()` vous ouvez également ajouter un ombrage. Avec `mf_graticule()`, des lignes de latitude et longitude avec de belles annotations.
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_shadow(x = africa, col = "grey50", cex = 1)
+mf_graticule(
+  x = africa,
+  col = "coral4",
+  lwd = 2,
+  lty = 2,
+  expandBB = c(.1, 0, 0, .1),
+  label = TRUE,
+  pos = c("right", "bottom"),
+  cex = .8,
+  add = TRUE
+)
+mf_map(x = africa, border = "white", lwd = 0.5, add= TRUE)
+```
+
+## Textes et étiquettes
+
+Vous pouvez ajouter des lappels avec la fonction `mf_label()`
+
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_label( x = africa,
+  var = "name",
+  col= "black",
+  halo = TRUE,
+  overlap = FALSE,
+  lines = TRUE)
+```
+
+Et une simple étiquette avec `mf_annotation()`
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_annotation(
+  x = africa[africa$ISO3 == "TUN", ],
+  txt = "Tunisie",
+  halo = TRUE,
+  cex = 1.5,
+  pos = "bottomleft"
+)
+```
+
+## Les thèmes
+
+Une série de thèmes prédéfinis est disponible : `"default"`, `"brutal"`, `"ink"`, `"dark"`, `"agolalight"`, `"candy"`, `"darkula"`, `"iceberg"`, `"green"`, `"nevermind"`, `"jsk"`, `"barcelona"`.
+
+Par exemple : 
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_theme("nevermind")
+mf_map(x = africa)
+mf_title(txt = "Le thème nevermind")
+```
+
+Le système de themes est très flexible. Vous pouvez prendre un theme et le modofier.
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_theme("nevermind", tab = TRUE, bg = "green")
+mf_map(x = africa)
+mf_title(txt = "Le thème nevermind modifié")
+```
+
+## Planches cartographiques
+
+Avec R, il est aisé de construire des figures contenant plusieurs graphiques, grace à l’argument `mfrow` de la fonction `par()`. 
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 13
+mf_theme("default")
+
+opar <- par(mfrow = c(1, 2))
+
+mf_map(x = africa,
+       var = "gdppc",
+       type = "choro",
+       border = "white",
+       leg_title = "PIB par habitant\n(US$ courants)",
+       inches	= 0.4)
+
+mf_map(x = africa,
+       var = "elec",
+       type = "choro",
+       nbreaks = 4,
+       border = "white",
+       pal = "Magenta",
+       leg_title = "Accès à l'électricité\n(% de la pop)",
+       inches	= 0.4)
+
+par(opar)
+
+```
+
+## Cartons
+
+La fonction `mf_inset_on()` permet de démarrer la création d’un carton. Il faut ensuite “refermer” le carton avec `mf_inset_off()`.
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width:  6.36
+
+# Carte principale
+mf_map(africa)
+
+# Petite carte
+tun <- africa[africa$ISO3 == "TUN", ]
+mf_inset_on(x = tun, pos = "topright", cex = .1)
+mf_map(tun, col = "#e69749", border = "white")
+mf_scale(pos = "bottomright")
+box()
+mf_inset_off()
+# Fin de la petite carte
+
+mf_title("Afrique et Tunisie")
+
+```
+
+## Exportez une carte
+
+Enfin, la fonction `mf_export()` vous permet d'exporter vos carte sdans différents formats.
+
+```{r}
+mf_export(africa, filename = "macarte.svg")
+mf_map(africa, add = TRUE)
+dev.off()
+```
+
 
 ## A vous de jouer
 
-Réaliser une carte sur un indicateur de votre choix.
+Réalisez une carte sur un indicateur de votre choix.
 Si besoin, vous pouvez aller chercher d'autres indicateurs grace au package `wbstats`
 
 
