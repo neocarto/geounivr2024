@@ -29,6 +29,7 @@ layer = {
       type: "prop",
       data: worldyear,
       var: indicator,
+      fixmax,
       id: "mylayer",
       fill: "red",
       fillOpacity: 0.7,
@@ -92,6 +93,7 @@ worldyear = viz.tool.merge({geom: world, geom_id: "ISO3", data: datayear, data_i
 datadisplay = datayear.map(d => ({id: d.id, name:d.name, [indicator]:d[indicator]}))
 types = new Map(metadata.map((d) => [d.id, d.type]))
 nbvalues = datadisplay.map(d => d[indicator]).filter(d => d!== "").length
+fixmax = d3.max(data.map(d => +d[indicator]))
 ```
 
 
