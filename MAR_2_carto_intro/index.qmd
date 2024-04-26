@@ -157,30 +157,22 @@ Données de stock
 
 ## Les logiciels
 
-Il existe une multitude de logiciels permetant de réaliser des cartes ou contribuant à leurs réalisation. Logiciules SVG, logiciels de cartographie clic bouton, logiciels en ligne de commande, logiciels DAO...
+Il existe une multitude de logiciels permetant de réaliser des cartes ou contribuant à leurs réalisation. Logiciels SVG, logiciels de cartographie clic bouton, logiciels en ligne de commande, logiciels DAO...
 
 <img src="img/logiciels.svg" style="border:none" width="100%"/></img>
 
-## Cartographie reproductible
+## Cartographie avec R
 
 De l'acquisition de données à la carte finale, on mobilise génralement différents logiciels, libres ou propriétaires. Plus on multiplie les logiciels, plus la chaine de traitement est brisée.
 
 <img src="img/chaine-traitement.png" style="border:none" width="100%"/></img>
 
-Une carte est dite reproductible si elle est accompagnée de tout ce qui a permis de le concevoir.
-
-<img src="img/Peng.png" style="border:none" width="100%"/></img>
-
-Exemple de carte réalisée avec une chaine de traitrement 100% en R.
-
-<img src="img/ironcurtain.png" style="border:none" width="100%"/></img>
-
-[rzine.fr/docs/20191125_ironcurtain](https://rzine.fr/docs/20191125_ironcurtain/index.html)
-
-Exemple de chaine de traitement
+Avec R, on va donc chercher à minimiser ces ruptures logicielles en regroupant l'ensemble de la chaine de traitement dans une seul écosystème.
 
 <img src="img/workflow.png" style="border:none" width="100%"/></img>
 
-Le logiciel r::mapsf
+Et cela permet de documenter noytre travail et de rendre nos cartes reproductibles. 
 
-<img src="img/mapsf.png" style="border:none" width="300px/"/></img>
+<img src="img/Peng.png" style="border:none" width="100%"/></img>
+
+Voyons voir comment tout cela fonctionne : [neocarto.github.io/geounivr2024/MAR_2_carto](https://neocarto.github.io/geounivr2024/MAR_2_carto/index.html)

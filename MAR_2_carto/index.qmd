@@ -22,12 +22,10 @@ Ce support est très largement inspiré du manuel [`Cartographie avec R`](https:
 
 ## Pakages utilisés dans cette session.
 
+Les principaux packages utilisés dans cette section sont : 
+
 - `sf`
 - `mapsf`
-- `cartogram` (facultatif)
-- `leaflet` (facultatif)
-- `mapview` (facultatif)
-- `wbstats` (facultatif)
 
 ## Initiez un nouveau projet
 
@@ -36,14 +34,7 @@ Ce support est très largement inspiré du manuel [`Cartographie avec R`](https:
 - Créez un nouveau projet et placez-le dans votre dossier.
 - Créez un nouveau document Quarto (ou eventuellement un simple script R si vous préférez)
 
-Si vous n'avez pas ces packages listés plus haut, vous pouvez les installer en tapant la ligne suivante dans la console.
-
-```{r}
-#| eval: false
-install.packages(c('sf', 'mapsf', 'cartogram', 'leaflet', 'mapview', 'wbstats'))
-```
-
-Pour gagner du temps, seuls `sf` et `mapsf` sont absolument nécéssaires. Vous pouvez donc installer uniquement ces deux là.
+Si vous n'avez pas les packages listés plus haut, vous pouvez les installer en tapant la ligne suivante dans la console.
 
 ```{r}
 #| eval: false
@@ -517,7 +508,7 @@ Par défaut, ma méthode de discretisation est la méthode des quantiles. Elle s
 mf_distr(africa$gdppc)
 ```
 
-Iii, la serie est dissymétrique à gauche, on peut donc opter plutôt pour la méthode `"geom"` qui est adaptée à ce type de distribution (les méthodes disponibles sont :  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", "jenks", "dpih", "q6", "geom", "arith", "em" or "msd").
+Ici, la serie est dissymétrique à gauche, on peut donc opter plutôt pour la méthode `"geom"` qui est adaptée à ce type de distribution (les méthodes disponibles sont :  `"fixed"`, `"sd"`, `"equal"`, `"pretty"`, `"quantile"`, `"kmeans"`, `"hclust"`, `"bclust"`, `"fisher"`, `"jenks"`, `"dpih"`, `"q6"`, `"geom"`, `"arith"`, `"em"` ou `"msd"`).
 
 
 ```{r}
@@ -535,7 +526,7 @@ mf_map(x = africa,
 mf_title(txt = "Richesse des pays d'Afrique en 2020 (method = 'geom')")
 ```
 
-Pour canger les couleurs, vous pouvez renseigner une palette de couleur avec l'argument  `pal` . par exemple : 
+Pour changer les couleurs, vous pouvez renseigner une palette de couleur avec l'argument  `pal` . par exemple : 
 
 ```{r}
 #| eval: false
@@ -592,7 +583,7 @@ val_order = c("Northern Africa", "Eastern Africa", "Western Africa", "Middle Afr
 
 ## Combinaisons
 
-Pour réaliser des cartes combinant deux variables, il est possible de supperpoer une carte choroplethe et une carte de stock. Par exemple : 
+Pour réaliser des cartes combinant deux variables, il est possible de supperposer une carte choroplethe et une carte de stock. Par exemple : 
 
 ```{r}
 #| warning: false
@@ -617,7 +608,9 @@ mf_map(x = africa,
 mf_title(txt = "Population et richesse en Agfrique")
 ```
 
-Mais vous pouvez aussi utiliser le types `"prop_choro"` et `"prop_typo". Dans ce cas, les choses se présentent comme ceci : 
+Mais vous pouvez aussi utiliser le types `"prop_choro"` et `"prop_typo".
+
+Dans ce cas, les choses se présentent comme ceci : 
 
 ```{r}
 #| warning: false
@@ -755,7 +748,7 @@ mf_map(x = africa)
 mf_title(txt = "Le thème nevermind")
 ```
 
-Le système de themes est très flexible. Vous pouvez prendre un theme et le modofier.
+Le système de themes est très flexible. Vous pouvez prendre un theme et le modifier.
 
 ```{r}
 #| warning: false
@@ -839,6 +832,12 @@ dev.off()
 Réalisez une carte sur un indicateur de votre choix.
 Si besoin, vous pouvez aller chercher d'autres indicateurs grace au package `wbstats`
 
+Si vous ne l'avez pas déjà installé, tapez ceci dans la console.
+
+```{r}
+#| eval: false
+install.packages('wbstats')
+```
 
 ```{r}
 library(wbstats)
@@ -876,13 +875,16 @@ mf_map(x = africa_birds,
        inches	= 0.3)
 ```
 
-# 3 - Cartographie avancée
+# 3 - Cartograms
 
-## Cartograms
+Il existe plusieurs méthodes pour réaliser des cartogrammes. Un certain nombre d'entre elles sont disponibles dans le package `cartogram`. Vous pouvez l'installer en tapant l'instruction suivante dans le console.
 
-Il existe plusieurs méthodes pour réaliser des cartogrammes.
+```{r}
+#| eval: false
+install.packages('cartogram')
+```
 
-### 1. Cartogrammes de Dorling
+## Cartogrammes de Dorling
 
 ```{r}
 library(cartogram)
@@ -910,7 +912,7 @@ mf_label(
 mf_title("Population totale - Cartogramme de Dorling")
 ```
 
-### 2. Les cartogrammes non continus
+## Les cartogrammes non continus
 
 ```{r}
 afr_ncont <- cartogram_ncont(x = africa, weight = "pop", k = 1.2)
@@ -919,7 +921,7 @@ mf_map(afr_ncont, col = "#5B89A3", border= "white", add = TRUE)
 mf_title("Population en Afrique - Cartogramme de Olson")
 ```
 
-### 3. Cartogrammes continus
+## Cartogrammes continus
 
 ```{r}
 africa[is.na(africa$pop),"pop"] <- 1
@@ -933,29 +935,41 @@ mf_map(africa, lwd = .5, border = "white")
 mf_inset_off()
 ```
 
-## Carroyage
+## Aller plus loin
 
-## Discontinuités
+Pour en savoir plus sur les différentes formes de cartogrammes, vous pouvez aussi consulter ce document réalisé en 2021 : [transcarto.github.io/rcartograms/TRANSCARTO_cartograms.html](https://transcarto.github.io/rcartograms/TRANSCARTO_cartograms.html)
 
-???
 
-## Lissages
+# 4 - Cartographie Interactive
 
-???
+Le langage R permet  d'embarquer des librairies en JavaScript dans des packages. Cela ouvre la possibilté de réaliser des poroposer des outils de cartographie interactive. Ici, nous parlerons de 2 exemples principaux. 
 
 ## mapview
+
+Le package `mapview` permet de créer rapidement et facilement des visualisations interactives de données spatiales avec ou sans fond de carte. Le package s'installe de la façon suivante : 
+
+```{r}
+#| eval: false
+install.packages('mapview')
+```
 
 ```{r}
 library(mapview)
 ```
 
 ```{r}
+#| warning: false
 mapview(africa) + mapview(st_centroid(africa))
 ```
 
 ## Leaflet
 
-Leaflet est un package basé sur le JavaScript, permettant de faire de la cartographie interactive. 
+Leaflet est un package basé sur le JavaScript, permettant de faire de la cartographie interactive. On l'installe de la façon suivante : 
+
+```{r}
+#| eval: false
+install.packages('leaflet')
+```
 
 ```{r}
 library(leaflet)
@@ -989,7 +1003,6 @@ m3 = leaflet() %>%
   addMarkers(data = st_centroid(africa_wgs84)) %>%  addMiniMap(position = "bottomright")
 m3
 ```
-
 
 ## Au delà de R
 
