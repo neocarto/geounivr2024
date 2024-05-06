@@ -327,7 +327,7 @@ Pour la visualiser, on a besoin d'importer une bibliothèque de cartographie. Ic
 On l'importe grâce à l'instruction `require()`.
 
 ```{ojs}
-viz = require("geoviz@0.6.0")
+viz = require("geoviz@0.6.1")
 ```
 
 Pour visualiser simplement les géométries avec une couleur aléatoire, on tape :
@@ -369,7 +369,7 @@ Rappelez-vous qu'avec Observable, nous sommes dans un environnement interactif e
 
 ```{ojs}
 viewof colorfill = Inputs.color({label: "Fond", value: "#4682b4"})
-viewof colorstroke = Inputs.color({label: "Contour", value: "#FF0000"})
+viewof colorstroke = Inputs.select(["red", "green", "blue"], {label: "Contour"})
 viewof thickness = Inputs.range([0, 10], {step: 0.1, label: "Epaisseur", value:1})
 ```
 
@@ -583,7 +583,7 @@ Notez que `"versor"` s'applique sur n'importe quelle projection, ce qui peut êt
 
 Comme les autres `marks`, les tuiles raster <a href="https://riatelab.github.io/geoviz/global.html#tile" target = "_BLANK"><img src="img/logo_doc.png"/></a> <a href="https://observablehq.com/@neocartocnrs/tile-mark" target = "_BLANK"><img src="img/logo_exemple.png"/></a> sont également zoomable.
 
-Les styles disponibles par défaut sont : "openstreetmap", "opentopomap", "worldterrain", "worldimagery", "worldStreet", "worldphysical", "shadedrelief", "stamenterrain", "cartodbvoyager", "stamentoner","stamentonerbackground","stamentonerlite","stamenwatercolor","hillshade","worldocean","natgeo" et "worldterrain"
+Les styles disponibles par défaut sont : "openstreetmap", "opentopomap", "worldterrain", "worldimagery", "worldStreet", "worldphysical", "shadedrelief", "stamenterrain", "cartodbvoyager", "stamentoner", "stamentonerbackground", "stamentonerlite", "stamenwatercolor", "hillshade", "worldocean", "natgeo" et "worldterrain"
 
 ::: callout-caution
 ## Attention
