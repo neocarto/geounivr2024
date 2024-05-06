@@ -215,7 +215,7 @@ Vous pourrez également accéder à des exemples pédagogiques et des démos en 
 
 Le jeu de données utilisé est issu de la [banque mondiale](https://data.worldbank.org/indicator). Les données ont été mises en forme [ici](https://observablehq.com/@neocartocnrs/world-bank-data).
 
-Téléchargez les données et placez-les-les dans votre répertoire **data**.
+Téléchargez les données et placez le fichier zip dans votre répertoire **data**.
 
 <a href = "https://github.com/neocarto/geounivr2024/raw/main/VEN1_geoviz_TP/data/worldbank.zip"><img src="img/download.png" height="50px"/><img /></a>
 
