@@ -27,7 +27,7 @@ execute:
 :::
 
 ::: {.column width="49%"}
-<img src="img/Mattangs.jpeg" style="border:none"/></img><br/> Ces cartes polynésiennes appelées <b>Rebbelibs</b>, <b>Medosou</b> ou <b>Mattangs</b> représentants les courants marins et la direction de la houle qui est perturbée par la présence des îles avec des batons de bois courbés, les coquillages représentants la position des îles. Elle datent de 1000 av.n.è.
+<img src="img/Mattangs.jpeg" style="border:none"/></img><br/> Ces cartes polynésiennes appelées <b>Rebbelibs</b>, <b>Medosou</b> ou <b>Mattangs</b> représentants les courants marins et la direction de la houle qui est perturbée par la présence des îles avec des bâtons de bois courbés, les coquillages représentants la position des îles. Elle datent de 1000 av.n.è.
 :::
 :::
 
@@ -38,7 +38,7 @@ execute:
 *Lambert, N., Zanin C. (2019). Mad Maps - L'Atlas qui va changer votre vision du monde (p. 144p). Armand Colin.*
 
 ::: notes
-L'humanité produit des cartes depuis plus de 4000 ans pour se repérer et/ou se déplacer. Petit à petit les représentations du monde se sont affinées. On dispose aujourd'hui de bases de données très précises permetant de représenter le monde. Est-ce "la fin de l'histoire" cartographique ?
+L'humanité produit des cartes depuis plus de 4000 ans pour se repérer et/ou se déplacer. Petit à petit les représentations du monde se sont affinées. On dispose aujourd'hui de bases de données très précises permettant de représenter le monde. Est-ce "la fin de l'histoire" cartographique ?
 :::
 
 ## Les débuts de la dataviz
@@ -74,7 +74,7 @@ L'humanité produit des cartes depuis plus de 4000 ans pour se repérer et/ou se
 :::
 
 ::: notes
-On va s'interesser maintenant à une autre histoire, celle de la visualisation de données. Cette histoire est plus courte. Elle commence vraiment au 18e siecle avec William Playfair et Florence Nightingale.
+On va s’intéresser maintenant à une autre histoire, celle de la visualisation de données. Cette histoire est plus courte. Elle commence vraiment au 18e siècle avec William Playfair et Florence Nightingale.
 :::
 
 ## La rencontre de 2 mondes
@@ -100,7 +100,7 @@ Carte Figurative des pertes successives en hommes de l'armée française dans la
 :::
 
 ::: notes
-Ces deux histoires s'intersectent pour la première fois en 1826 avec la carte figurative de Charles Dupin. Pour la première fois, on représentatait des données statistiques sur un repère géographique. C'est aussi la première carte choroplèthe. S'en suivent de nombreuses autres représentations cartographiques. Les réalisations de C.J. Minard sont particulièrement remarquables.
+Ces deux histoires s'intersectent pour la première fois en 1826 avec la carte figurative de Charles Dupin. Pour la première fois, on représentait des données statistiques sur un repère géographique. C'est aussi la première carte choroplèthe. S'en suivent de nombreuses autres représentations cartographiques. Les réalisations de C.J. Minard sont particulièrement remarquables.
 :::
 
 ## Bertin, 1967 (et 1973)
@@ -114,7 +114,7 @@ Ces deux histoires s'intersectent pour la première fois en 1826 avec la carte f
 <img src="img/semio.png" style="border:none"/></img>
 
 ::: notes
-Cette façon de représenter des données via des signes graphiques et systhétisée de façon remarquable en 1967 par Jacques Bertin.
+Cette façon de représenter des données via des signes graphiques et synthétisée de façon remarquable en 1967 par Jacques Bertin.
 :::
 
 ## Sémiologie graphique
@@ -157,13 +157,13 @@ Données de stock
 
 ## Les logiciels
 
-Il existe une multitude de logiciels permetant de réaliser des cartes ou contribuant à leurs réalisation. Logiciels SVG, logiciels de cartographie clic bouton, logiciels en ligne de commande, logiciels DAO...
+Il existe une multitude de logiciels permettant de réaliser des cartes ou contribuant à leurs réalisation. Logiciels SVG, logiciels de cartographie clic bouton, logiciels en ligne de commande, logiciels DAO...
 
 <img src="img/logiciels.svg" style="border:none" width="100%"/></img>
 
 ## Cartographie avec R
 
-De l'acquisition de données à la carte finale, on mobilise génralement différents logiciels, libres ou propriétaires. Plus on multiplie les logiciels, plus la chaine de traitement est brisée.
+De l'acquisition de données à la carte finale, on mobilise généralement différents logiciels, libres ou propriétaires. Plus on multiplie les logiciels, plus la chaîne de traitement est brisée.
 
 <img src="img/chaine-traitement.png" style="border:none" width="100%"/></img>
 
@@ -171,7 +171,7 @@ Avec R, on va donc chercher à minimiser ces ruptures logicielles en regroupant 
 
 <img src="img/workflow.png" style="border:none" width="100%"/></img>
 
-Et cela permet de documenter noytre travail et de rendre nos cartes reproductibles. 
+Et cela permet de documenter notre travail et de rendre nos cartes reproductibles.
 
 <img src="img/Peng.png" style="border:none" width="100%"/></img>
 

@@ -150,9 +150,7 @@ Ce code
 donne ceci :
 
 <svg viewBox="0 0 1000 100" xmlns="http://www.w3.org/2000/svg">
-
 <rect x="0" y="0" width="100px" height="100px" fill="#F2CD3B" stroke="#06000C"/>
-
 </svg>
 
 Attention, les coordonnées \[0,0\] sont en haut à gauche.
@@ -293,9 +291,11 @@ Javascript for data Analysis, par Mike Bostock <https://towardsdatascience.com/j
 
 ## Observable notebooks
 
-Les notebooks Observable permettent de travailler en ligne, directement dans le navigateur, sans avoir beosin d'installer le moindre logiciel. Il faut bien sur avoir une bonne connexion internet.
+Les notebooks Observable permettent de travailler en ligne, directement dans le navigateur, sans avoir besoin d'installer le moindre logiciel. Il faut bien sur avoir une bonne connexion internet.
 
-![](img/observable2.png){width:100%}
+![](img/observable2.png)
+
+Par exemple : [https://observablehq.com/trending](https://observablehq.com/trending)
 
 ## Observable framework
 
@@ -347,7 +347,7 @@ OJS c'est aussi une évolution du langage javascript pour en faire un langage ad
 
 ## Les cellules / chunk {ojs}
 
-Dans Quarto, on peut écrire/executer du code Observable en utilisant des chuncks **{ojs}**.
+Dans Quarto, on peut écrire/exécuter du code Observable en utilisant des chuncks **{ojs}**.
 
 Chaque ligne définit une variable et une cellule qui doit être unique.
 
@@ -534,7 +534,7 @@ range3
 
 ## Tout est réactif 🔥
 
-Dans Observable, grace à la relation topologique entre les cellules, tout est réactif. Chaque fois qu'on bouge quelque chose, ce qui en dépend est rééxécuté.
+Dans Observable, grâce à la relation topologique entre les cellules, tout est réactif. Chaque fois qu'on bouge quelque chose, ce qui en dépend est ré-éxécuté.
 
 ```{ojs}
 viewof age = Inputs.range([15, 70], {label: "age", value: 30, step: 1,})
@@ -567,7 +567,7 @@ Reprenons notre SVG de tout à l'heure
 }
 ```
 
-On peut facilement proposer à l'utilisateur de moidifier ce dessin en remplaçant des valeurs par des variables pilotées par des inputs.
+On peut facilement proposer à l'utilisateur de modifier ce dessin en remplaçant des valeurs par des variables pilotées par des inputs.
 
 ```{ojs}
 //| echo: true
@@ -769,7 +769,7 @@ return svg.render()
 
 ## Imports
 
-On l'a dit tout à l'heure, Observable c'est aussi une plateforme web hebergeant des notebooks.
+On l'a dit tout à l'heure, Observable c'est aussi une plateforme web hébergeant des notebooks.
 
 ![](img/trendings.png)<br/>
 
@@ -793,3 +793,5 @@ chart = SankeyChart({
 ```
 
 # Travaux pratiques
+
+👉 [let's go](https://neocarto.github.io/geounivr2024/VEN1_geoviz_TP/docs/index.html)

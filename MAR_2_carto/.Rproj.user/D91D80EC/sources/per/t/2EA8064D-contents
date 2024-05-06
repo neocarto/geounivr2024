@@ -16,23 +16,23 @@ editor_options:
 
 ![](./img/contourlines.png)
 
-::: {.callout-note}
-Ce support est très largement inspiré du manuel [`Cartographie avec R`](https://rcarto.github.io/cartographie_avec_r/) réalisé par Timothée Giraud et Hugues Pécout. Et on les en remercie chalereusement 🙏
+::: callout-note
+Ce support est très largement inspiré du manuel [`Cartographie avec R`](https://rcarto.github.io/cartographie_avec_r/) réalisé par Timothée Giraud et Hugues Pécout. Et on les en remercie chaleureusement 🙏
 :::
 
 ## Pakages utilisés dans cette session.
 
-Les principaux packages utilisés dans cette section sont : 
+Les principaux packages utilisés dans cette section sont :
 
-- `sf`
-- `mapsf`
+-   `sf`
+-   `mapsf`
 
 ## Initiez un nouveau projet
 
-- Créez un nouveau repertoire de travail.
-- Ouvrez Rstudio.
-- Créez un nouveau projet et placez-le dans votre dossier.
-- Créez un nouveau document Quarto (ou eventuellement un simple script R si vous préférez)
+-   Créez un nouveau répertoire de travail.
+-   Ouvrez Rstudio.
+-   Créez un nouveau projet et placez-le dans votre dossier.
+-   Créez un nouveau document Quarto (ou éventuellement un simple script R si vous préférez)
 
 Si vous n'avez pas les packages listés plus haut, vous pouvez les installer en tapant la ligne suivante dans la console.
 
@@ -43,7 +43,7 @@ install.packages(c('sf', 'mapsf'))
 
 Dans cette séquence, nous travaillons à l'échelle des pays africains. Les données statistiques sont issues de la base de données de la banque mondiale.
 
-Les données sont disponibles au téléchargement ici. 
+Les données sont disponibles au téléchargement ici.
 
 <a href = "https://github.com/neocarto/geounivr2024/raw/main/MAR_2_carto/data/afrique.zip"><img src="img/download.png" height="50px"/><img /></a>
 
@@ -60,7 +60,7 @@ Tout est prêt 😎
 library("sf")
 ```
 
-On dispose d'un fichier geipackage contenant plusieurs géométries
+On dispose d'un fichier geopackage contenant plusieurs géométries
 
 ```{r}
 st_layers("data/afrique.gpkg")
@@ -74,14 +74,12 @@ geom <- st_transform(st_read("data/afrique.gpkg", layer = "africa"),"epsg:3857")
 ```
 
 ::: {.callout-note collapse="true"}
-
-## Contenu du Spatial*DataFrame
+## Contenu du Spatial\*DataFrame
 
 ```{r}
 #| echo: false
 head(geom,4)
 ```
-
 :::
 
 2 - Import des données statistiques issues de la banque mondiale.
@@ -92,7 +90,6 @@ data <- read.csv("data/worldbank_africa.csv")
 ```
 
 ::: {.callout-note collapse="true"}
-
 ## Liste des variables disponibles
 
 ```{r}
@@ -100,7 +97,6 @@ data <- read.csv("data/worldbank_africa.csv")
 meta <- read.csv("data/worldbank_africa_meta.csv")
 meta[,c("id", "type","description")]
 ```
-
 :::
 
 3 - Jointure
@@ -116,7 +112,7 @@ africa <-  merge(
 )
 ```
 
-On dispose maintenant du Spatial*DataFrame `africa` qui contient à la fois des données et des géométries. 
+On dispose maintenant du Spatial\*DataFrame `africa` qui contient à la fois des données et des géométries.
 
 Et on ajoute quelques couches additionnelles
 
@@ -132,24 +128,24 @@ roads <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_roads"),"epsg
 
 # 1 - cartographie avec `sf`
 
-Grâce au package `sf`, la fonction `plot()` ets étendue et permet l'afficher d'un Spatial*DataFrame comme n'importe quel graphique.
+Grâce au package `sf`, la fonction `plot()` est étendue et permet l'afficher d'un Spatial\*DataFrame comme n'importe quel graphique.
 
-### Comportement par defaut
+### Comportement par défaut
 
-Par defaut, la fonction renvoie une image pouvant contenir jusqu'à 10 cartes, chaque carte correspondant à une colonne. 
+Par de faut, la fonction renvoie une image pouvant contenir jusqu'à 10 cartes, chaque carte correspondant à une colonne.
 
 ```{r}
 #| warning: false
 plot(africa)
 ```
 
-Si il y a plus de 10 colonnes dans le jeu de données, alors on ajoute la paramètre `max.plot = ncol(africa) - 1` (le nombre de colonnes total moins la colonne de géometries).
+Si il y a plus de 10 colonnes dans le jeu de données, alors on ajoute la paramètre `max.plot = ncol(africa) - 1` (le nombre de colonnes total moins la colonne de géométries).
 
 ```{r}
 plot(africa, max.plot = ncol(africa) - 1)
 ```
 
-On perçoit que les couleurs ne sont pas choisies totalement au hasard. Nous verrons un peu plus tard comme cela fonctionne. 
+On perçoit que les couleurs ne sont pas choisies totalement au hasard. Nous verrons un peu plus tard comme cela fonctionne.
 
 Si on souhaite afficher simplement les géométries, on utilise la fonction `st_geometry()`
 
@@ -167,14 +163,14 @@ plot(africa$geometry)
 
 ### Marges en emprise
 
-Dans les affichages précédents, on constate qu'il y a beaucoup d'espace perdu autour de la carte. On peut modifier les marges en modifiant les parametres graphiques. `mar` permet de mettre les marges à zero. `xaxs='i'`, `yaxs='i'` permettent de supprimer les espaces residuels. 
-
+Dans les affichages précédents, on constate qu'il y a beaucoup d'espace perdu autour de la carte. On peut modifier les marges en modifiant les paramètres graphiques. `mar` permet de mettre les marges à zéro. `xaxs='i'`, `yaxs='i'` permettent de supprimer les espaces résiduels.
 
 ```{r}
 par(mar = c(0, 0, 0, 0),  xaxs='i', yaxs='i', bg = "#F1F3F5") # c(bottom, left, top, right))
 plot(st_geometry(africa))
 ```
-Quand on travaille dans un document quarto, il est également possible de modifier la taille des figures avec les parametres `fig-height` et `fig-width`. Soit dans le yaml en haut du document. Soit directement dans le chunk.
+
+Quand on travaille dans un document quarto, il est également possible de modifier la taille des figures avec les paramètres `fig-height` et `fig-width`. Soit dans le yaml en haut du document. Soit directement dans le chunk.
 
 Ici, on détermine le bon ratio entre la hauteur et la largeur.
 
@@ -188,10 +184,10 @@ width
 
 Puis on écrit
 
-~~~r
+``` r
 #| fig-heigth: 6
 #| fig-width: 6.36
-~~~
+```
 
 Et on obtient une carte qui prend bien tout l'espace souhaité.
 
@@ -214,9 +210,9 @@ plot(st_geometry(world), xlim = c(bb$xmin, bb$xmax), ylim = c(bb$ymin, bb$ymax))
 
 De nombreux paramètres permettent de personnaliser le style de la carte. Nous en citons ici quelques exemples.
 
-- Couleur de fond : `col`
-- Couleur de contour : `border`
-- Epaisseur des tracés : `lwd`
+-   Couleur de fond : `col`
+-   Couleur de contour : `border`
+-   Epaisseur des tracés : `lwd`
 
 ```{r}
 #| fig-height: 6
@@ -225,7 +221,7 @@ par(mar = c(0, 0, 0, 0), bg = "#F1F3F5", xaxs='i', yaxs='i')
 plot(st_geometry(africa), col = "#5b89a3", border = "white", lwd = 0.5)
 ```
 
-::: {.callout-tip collapse=true}
+::: {.callout-tip collapse="true"}
 NB : Il y a 657 noms de couleurs disponibles dans R. Pour les afficher, vous pouvez taper `colors()`
 
 ```{r}
@@ -236,7 +232,7 @@ head(cols, 20)
 
 Avec `lty`, on peut également changer le type de traits
 
-<img src = "./img/lty.png" width = "200px"></img>
+<img src="./img/lty.png" width="200px"/></img>
 
 ```{r}
 #| fig-height: 6
@@ -245,9 +241,9 @@ par(mar = c(0, 0, 0, 0), bg = "#F1F3F5", xaxs='i', yaxs='i')
 plot(st_geometry(roads), lty = 3)
 ```
 
-Avec `pch`, on peut choisir le s de symbole. Avec `cex`, on determine sa taille.
+Avec `pch`, on peut choisir le s de symbole. Avec `cex`, on détermine sa taille.
 
-<img src = "./img/pch.png" width = "300px"></img>
+<img src="./img/pch.png" width="300px"/></img>
 
 ```{r}
 #| warning: false
@@ -259,7 +255,7 @@ plot(st_geometry(places), pch = 17, col = "red", cex = 1)
 
 ### Supperposer des couches
 
-Pour supproposer des couches, vous pouvez simplement utiliser le paramètre `add = TRUE` (sous reserve que les couches soient dans le même système de coordonnées)
+Pour superposer des couches, vous pouvez simplement utiliser le paramètre `add = TRUE` (sous réserve que les couches soient dans le même système de coordonnées)
 
 ```{r}
 #| fig-height: 6
@@ -270,14 +266,13 @@ plot(st_geometry(roads), col = "red", add = TRUE)
 plot(st_geometry(places), pch = 19, col = 'black', cex = 0.5, add = TRUE)
 ```
 
-
 ### Autres éléments
 
 Il est possible d'ajouter d'autres éléments à la mise en page.
 
-- Les axes : `axes = TRUE/FALSE`
-- Graticule : `graticule = TRUE`
-- Titre = `main = "Hello"`
+-   Les axes : `axes = TRUE/FALSE`
+-   Graticule : `graticule = TRUE`
+-   Titre = `main = "Hello"`
 
 Par exemple :
 
@@ -302,12 +297,10 @@ plot(st_geometry(africa) + c(50000,-50000), col = "#827e6c80", border = NA)
 plot(st_geometry(africa) , col = "#5B89A3", border = NA, add = TRUE)
 ```
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Astuce
 
-On peut faire varier la transparence d'une couleur au fromat hexadecimal en ajouter un nombre de 00 à 99 à la fin du code. Par exemple `#827e6c60` applique une opacité de 60% à la couleur `#827e6c`.
-
+On peut faire varier la transparence d'une couleur au format hexadécimal en ajouter un nombre de 00 à 99 à la fin du code. Par exemple `#827e6c60` applique une opacité de 60% à la couleur `#827e6c`.
 :::
 
 On peut même imaginer cet ombrage en dégardé avec une boucle
@@ -327,8 +320,6 @@ plot(st_geometry(africa) + c(i * delta,-i * delta), col = "#827e6c20", border = 
 plot(st_geometry(africa) , col = "#5B89A3", border = NA, add = TRUE)
 ```
 
-
-
 ## Cartographie thématique
 
 Avec le package `sf`, il est (un peu) possible de réaliser des cartes thématiques. Rappelez-vous les couleurs de tout à l'heure. Dans le cas où un seul attribut est sélectionné, une légende est attribuée par défaut à côté de la carte. Ici, une donnée qualitative.
@@ -337,13 +328,13 @@ Avec le package `sf`, il est (un peu) possible de réaliser des cartes thématiq
 plot(africa["region"])
 ```
 
-Le positionnement de la légende peut être défini par le paramètre `key.pos` (1 = dessous, 2 = gauche, 3 = dessus and 4 = droite). Sa taille peut également être modifiée avec les paramètres  `key.width` et `key.length`
+Le positionnement de la légende peut être défini par le paramètre `key.pos` (1 = dessous, 2 = gauche, 3 = dessus et 4 = droite). Sa taille peut également être modifiée avec les paramètres `key.width` et `key.length`
 
 ```{r}
 plot(africa["region"], key.pos = 1, key.length = 1)
 ```
 
-Si on souhaite cartographier une variable quantitative, la palette par defaut est différente.
+Si on souhaite cartographier une variable quantitative, la palette par défaut est différente.
 
 ```{r}
 plot(africa["pop"])
@@ -351,15 +342,13 @@ plot(africa["pop"])
 
 Grace au paramètre `breaks`, il est possible de donner ses propres classes de valeur ou de donner une méthode de discrétisation (méthodes du package `classInt`).
 
-
 ```{r}
 plot(africa["pop"], breaks = "jenks")
 ```
 
 ### Exports
 
-Ici, on a affiché toutes les cartes dans le document. Mais on peut également choisir de les construire dans un format donné (pdf, svg, png, ps, etc.), ce qui peut être utile pour les retravailler dans un logiciel de DAO. Par exemple, on peut écrire : 
-
+Ici, on a affiché toutes les cartes dans le document. Mais on peut également choisir de les construire dans un format donné (pdf, svg, png, ps, etc.), ce qui peut être utile pour les retravailler dans un logiciel de DAO. Par exemple, on peut écrire :
 
 ```{r}
 #| output: false
@@ -371,16 +360,14 @@ dev.off()
 ### Bilan et limites
 
 ::: {.callout-important title="Que retenir ?"}
-
 Les fonctions de cartographies dans les fonctionnalités de base de `sf` sont très limitées. On ne peut pas, par exemple, dessiner des symboles proportionnels et leur légende associée. Si on veut aller plus loin, on a besoin d'un package spécialisé en représentations cartographiques. C'est à ce besoin que répond le package `mapsf`.
-
 :::
 
 # 2 - le package `mapsf`
 
 `mapsf` permet de créer la plupart des types de carte utilisés habituellement en cartographie statistique (cartes choroplèthes, typologies, symboles proportionnels ou gradués…).
 
-<img src = "img/mapsf.png" width ="250px"></img>
+<img src="img/mapsf.png" width="250px"/></img>
 
 Pour chaque type de carte, plusieurs paramètres permettent de personnaliser la représentation cartographique. Ces paramètres sont les mêmes que ceux que l’on retrouve dans les logiciels de SIG ou de cartographie usuels. `mapsf` est le successeur du package `cartography`. Si vous avez l'habitude d'utiliser ce dernier, nous vous conseillons vivement d'utiliser dorénavant `mapsf`.
 
@@ -392,27 +379,31 @@ library("mapsf")
 
 ## Documentation et supports
 
-De nombreux documents permettent de prendre en main ce package. 
+De nombreux documents permettent de prendre en main ce package.
 
-- Le [site web](https://riatelab.github.io/mapsf)
-- La [feuille de triche](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)
-- Le manuel [cartographie avec R](https://rcarto.github.io/cartographie_avec_r/)
+-   Le [site web](https://riatelab.github.io/mapsf)
+-   La [feuille de triche](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)
+-   Le manuel [cartographie avec R](https://rcarto.github.io/cartographie_avec_r/)
 
-Et surtout, il faut aller voir dans la documentation du package directement dans RStudio. Vous y decouvrirez une magnifique vignette. 
+Et surtout, il faut aller voir dans la documentation du package directement dans RStudio. Vous y découvrirez une magnifique vignette.
 
 ## Afficher un fond de carte
 
-La fonction `mf_map()` est la fonction centrale du package mapsf. Elle remplace la fonction *plot*. Elle permet de réaliser la plupart des représentations usuelles en cartographie. Par défaut, elle permet d'afficher un fond de carte. La fonction `mf_title()` permet d'ajouter un titre à la place de *main*.
+La fonction `mf_map()` est la fonction centrale du package `mapsf`. Elle remplace la fonction *plot*. Elle permet de réaliser la plupart des représentations usuelles en cartographie. Par défaut, elle permet d'afficher un fond de carte.
 
-::: {.callout-tip}
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(africa)
+```
 
+ La fonction `mf_title()` permet d'ajouter un titre à la place de *main*. Avec `add = TRUE`, on peut supproposer des couches.
+
+::: callout-tip
 ## Astuce
-
 En affichant une première couche avec `border = NA` et `col = NA`, on peut ajouter un calque vide pour fixer l'emprise de la carte
-
 :::
-
-
 
 ```{r}
 #| warning: false
@@ -425,12 +416,10 @@ mf_map(x = places, pch = 20, cex = .7, col = "darkred", add = TRUE)
 mf_title(txt = "L'Afrique")
 ```
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Astuce
 
-Pour determiner la taille de la figure, vous pouvez utiliser la fonction `mf_get_ratio()`
-
+Pour déterminer la taille de la figure, vous pouvez utiliser la fonction `mf_get_ratio()`
 :::
 
 ## Symboles proportionnels
@@ -448,23 +437,20 @@ mf_map(x = africa,
        border = "white",
        col = "#FF000080",
        leg_title = "Nombre d'habitants\nen 2020",
-       inches	= 0.4)
+       inches	= 0.4 # taille du plus grand symbole
+)
 mf_title(txt = "Population totale")
 ```
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Astuce
 
 Pour dessiner des carrés au lieu des cercles, vous pouvez utiliser `symbol = "square"`
-
 :::
-
 
 ## Symboles gradués
 
-Avec le type `"grad"`, vous pouvez réaliser la même carte avec des symboles gradués (ce qui dans le cas de figure ici, est moins efficace). Pour cela, vous devez choisir un nombre de classes (`nbreaks`) et une méthode de discretisation (`breaks`).
-
+Avec le type `"grad"`, vous pouvez réaliser la même carte avec des symboles gradués (ce qui dans le cas de figure ici, est moins efficace). Pour cela, vous devez choisir un nombre de classes (`nbreaks`) et une méthode de discrétisation (`breaks`).
 
 ```{r}
 #| warning: false
@@ -485,7 +471,7 @@ mf_title(txt = "Population totale (classes de tailles)")
 
 ## Carte choroplèthe
 
-Pour représenter des données quantitatives relatives (ratio, indices, echelles...), on utilisera la plupart du temps des dégradés de couleurs. Dans mapsf, cela s'effectue avec le type `"choro"`. Comme précédement, les paramètres `nbreaks` et `breaks` permetent de parametrer les discretisations. 
+Pour représenter des données quantitatives relatives (ratio, indices, échelles...), on utilisera la plupart du temps des dégradés de couleurs. Dans `mapsf`, cela s'effectue avec le type `"choro"`. Comme précédemment, les paramètres `nbreaks` et `breaks` permettent de paramétrer les discrétisations.
 
 ```{r}
 #| warning: false
@@ -496,20 +482,17 @@ mf_map(x = africa,
        type = "choro",
        nbreaks = 5,
        border = "white",
-       leg_title = "PIB par habitant\n(US$ courants)",
-       inches	= 0.4)
+       leg_title = "PIB par habitant\n(US$ courants)")
 mf_title(txt = "Richesse des pays d'Anfrique en 2020")
 ```
 
-
-Par défaut, ma méthode de discretisation est la méthode des quantiles. Elle s'adapte donc à n'importe quelle distribution de données. Mais avant de réaliser une carte choroplethe, il est préférable d'étudier d'abord la distribution statistique de la variable que l’on souhaite cartographier. La fonction `mf_distr()` permet de visualiser cette distributions.
+Par défaut, la méthode de discrétisation est la méthode des **quantiles**. Elle s'adapte donc à n'importe quelle distribution de données. Mais avant de réaliser une carte choroplèthe, il est préférable d'étudier d'abord la distribution statistique de la variable que l’on souhaite cartographier. La fonction `mf_distr()` permet de visualiser cette distributions.
 
 ```{r}
 mf_distr(africa$gdppc)
 ```
 
-Ici, la serie est dissymétrique à gauche, on peut donc opter plutôt pour la méthode `"geom"` qui est adaptée à ce type de distribution (les méthodes disponibles sont :  `"fixed"`, `"sd"`, `"equal"`, `"pretty"`, `"quantile"`, `"kmeans"`, `"hclust"`, `"bclust"`, `"fisher"`, `"jenks"`, `"dpih"`, `"q6"`, `"geom"`, `"arith"`, `"em"` ou `"msd"`).
-
+Ici, la série est dissymétrique à gauche, on peut donc opter plutôt pour la méthode `"geom"` qui est adaptée à ce type de distribution (les méthodes disponibles sont : `"fixed"`, `"sd"`, `"equal"`, `"pretty"`, `"quantile"`, `"kmeans"`, `"hclust"`, `"bclust"`, `"fisher"`, `"jenks"`, `"dpih"`, `"q6"`, `"geom"`, `"arith"`, `"em"` ou `"msd"`).
 
 ```{r}
 #| warning: false
@@ -521,12 +504,11 @@ mf_map(x = africa,
        breaks = "geom",
        nbreaks = 4,
        border = "white",
-       leg_title = "PIB par habitant\n(US$ courants)",
-       inches	= 0.4)
+       leg_title = "PIB par habitant\n(US$ courants)")
 mf_title(txt = "Richesse des pays d'Afrique en 2020 (method = 'geom')")
 ```
 
-Pour changer les couleurs, vous pouvez renseigner une palette de couleur avec l'argument  `pal` . par exemple : 
+Pour changer les couleurs, vous pouvez renseigner une palette de couleur avec l'argument `pal`. Par exemple :
 
 ```{r}
 #| eval: false
@@ -544,7 +526,6 @@ pal = c("#F3CAD2", "#E08BB1", "#AF4F91", "#6D1C68")
 
 Ou créer une palette sur mesure avec la fonction `mf_get_pal()`.
 
-
 ```{r}
 #| eval: false
 pal = mf_get_pal(n = c(6,3), palette = c("Burg", "Teal"))
@@ -554,7 +535,6 @@ pal = mf_get_pal(n = c(6,3), palette = c("Burg", "Teal"))
 
 Pour cartographier des données qualitatives, on utilise `type = "typo"`.
 
-
 ```{r}
 #| warning: false
 #| fig-height: 6
@@ -563,27 +543,24 @@ mf_map(x = africa,
        var = "region",
        type = "typo",
        breaks = "geom",
-       border = "white",
-       inches	= 0.4)
+       border = "white")
 mf_title(txt = "Les grandes régions d'Afrique")
 ```
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Astuce
 
-L’argument `val_order` sert à ordonner les modalités dans la légende. Par exemple : 
+L’argument `val_order` sert à ordonner les modalités dans la légende. Par exemple :
 
 ```{r}
 #| eval: false
 val_order = c("Northern Africa", "Eastern Africa", "Western Africa", "Middle Africa", "Southern Africa")
 ```
-
 :::
 
 ## Combinaisons
 
-Pour réaliser des cartes combinant deux variables, il est possible de supperposer une carte choroplethe et une carte de stock. Par exemple : 
+Pour réaliser des cartes combinant deux variables, il est possible de superposer une carte choroplèthe et une carte de stock. Par exemple :
 
 ```{r}
 #| warning: false
@@ -595,8 +572,7 @@ mf_map(x = africa,
        nbreaks = 5,
        border = "white",
        leg_pos = "topleft",
-       leg_title = "PIB par habitant\n(US$ courants)",
-       inches	= 0.4)
+       leg_title = "PIB par habitant\n(US$ courants)")
 mf_map(x = africa,
        var = "pop",
        type = "prop",
@@ -605,12 +581,12 @@ mf_map(x = africa,
        col = NA,
        leg_title = "Nombre d'habitants\nen 2020",
        inches	= 0.4)
-mf_title(txt = "Population et richesse en Agfrique")
+mf_title(txt = "Population et richesse en Afrique")
 ```
 
-Mais vous pouvez aussi utiliser le types `"prop_choro"` et `"prop_typo".
+Mais vous pouvez aussi utiliser le types `"prop_choro"` et `"prop_typo"`.
 
-Dans ce cas, les choses se présentent comme ceci : 
+Dans ce cas, les choses se présentent comme ceci :
 
 ```{r}
 #| warning: false
@@ -627,14 +603,31 @@ mf_map(x = africa,
        inches	= 0.4)
 ```
 
+Ou bien : 
+
+```{r}
+#| warning: false
+#| fig-height: 6
+#| fig-width: 6.36
+mf_map(x = africa, border = "white", lwd = 0.5)
+mf_map(x = africa,
+       var = c("pop","region"),
+       type = "prop_typo",
+       nbreaks = 5,
+       border = "white",
+       leg_pos = c("bottomleft","topleft"),
+       leg_title = c("Nombre d'habitants\nen 2020", "Régions d'appartenance"),
+       inches	= 0.4)
+```
+
 ## Elements d'habillage
 
-La package mapsf pemet d'ajouter plsueiurs éléments d'habillage.
+La package `mapsf` pemet d'ajouter plusieurs éléments d'habillage.
 
-- `mf_title()` permet d'ajouter un titre
-- `mf_credits()` permet d'afficher la source
-- `mf_scale()` ajoute une echelle
-- `mf_arrow()` ajoute une orientation.
+-   `mf_title()` permet d'ajouter un titre
+-   `mf_credits()` permet d'afficher la source
+-   `mf_scale()` ajoute une échelle
+-   `mf_arrow()` ajoute une orientation.
 
 ```{r}
 #| warning: false
@@ -660,11 +653,10 @@ mf_scale(col = "red", scale_units = "mi", pos = "bottomleft")
 mf_arrow(pos = "topright")
 ```
 
-::: {.callout-tip}
-
+::: callout-tip
 ## Astuce
 
-Tous ces élements peuvent être regroupés dans la fonction `mf_layout()`
+Tous ces éléments peuvent être regroupés dans la fonction `mf_layout()`
 
 ```{r}
 #| eval: false
@@ -675,10 +667,11 @@ mf_layout(
   scale = TRUE
 )
 ```
-
 :::
 
-Avec `mf_shadow()` vous ouvez également ajouter un ombrage. Avec `mf_graticule()`, des lignes de latitude et longitude avec de belles annotations.
+Avec `mf_shadow()` vous pouvez également ajouter un ombrage.
+
+Avec `mf_graticule()`, des lignes de latitude et longitude avec de belles annotations.
 
 ```{r}
 #| warning: false
@@ -701,8 +694,7 @@ mf_map(x = africa, border = "white", lwd = 0.5, add= TRUE)
 
 ## Textes et étiquettes
 
-Vous pouvez ajouter des lappels avec la fonction `mf_label()`
-
+Vous pouvez ajouter des etiquettes avec la fonction `mf_label()`
 
 ```{r}
 #| warning: false
@@ -737,7 +729,7 @@ mf_annotation(
 
 Une série de thèmes prédéfinis est disponible : `"default"`, `"brutal"`, `"ink"`, `"dark"`, `"agolalight"`, `"candy"`, `"darkula"`, `"iceberg"`, `"green"`, `"nevermind"`, `"jsk"`, `"barcelona"`.
 
-Par exemple : 
+Par exemple :
 
 ```{r}
 #| warning: false
@@ -748,7 +740,7 @@ mf_map(x = africa)
 mf_title(txt = "Le thème nevermind")
 ```
 
-Le système de themes est très flexible. Vous pouvez prendre un theme et le modifier.
+Le système de thèmes est très flexible. Vous pouvez prendre un thème et le modifier.
 
 ```{r}
 #| warning: false
@@ -761,7 +753,7 @@ mf_title(txt = "Le thème nevermind modifié")
 
 ## Planches cartographiques
 
-Avec R, il est aisé de construire des figures contenant plusieurs graphiques, grace à l’argument `mfrow` de la fonction `par()`. 
+Avec R, il est aisé de construire des figures contenant plusieurs graphiques, grâce à l’argument `mfrow` de la fonction `par()`.
 
 ```{r}
 #| warning: false
@@ -818,7 +810,7 @@ mf_title("Afrique et Tunisie")
 
 ## Exportez une carte
 
-Enfin, la fonction `mf_export()` vous permet d'exporter vos carte sdans différents formats.
+Enfin, la fonction `mf_export()` vous permet d'exporter vos cartes dans différents formats.
 
 ```{r}
 mf_export(africa, filename = "macarte.svg")
@@ -826,11 +818,9 @@ mf_map(africa, add = TRUE)
 dev.off()
 ```
 
-
 ## A vous de jouer
 
-Réalisez une carte sur un indicateur de votre choix.
-Si besoin, vous pouvez aller chercher d'autres indicateurs grace au package `wbstats`
+Réalisez une carte sur un indicateur de votre choix. Si besoin, vous pouvez aller chercher d'autres indicateurs grâce au package `wbstats`
 
 Si vous ne l'avez pas déjà installé, tapez ceci dans la console.
 
@@ -875,7 +865,7 @@ mf_map(x = africa_birds,
        inches	= 0.3)
 ```
 
-# 3 - Cartograms
+# 3 - Cartogrammes
 
 Il existe plusieurs méthodes pour réaliser des cartogrammes. Un certain nombre d'entre elles sont disponibles dans le package `cartogram`. Vous pouvez l'installer en tapant l'instruction suivante dans le console.
 
@@ -939,14 +929,13 @@ mf_inset_off()
 
 Pour en savoir plus sur les différentes formes de cartogrammes, vous pouvez aussi consulter ce document réalisé en 2021 : [transcarto.github.io/rcartograms/TRANSCARTO_cartograms.html](https://transcarto.github.io/rcartograms/TRANSCARTO_cartograms.html)
 
-
 # 4 - Cartographie Interactive
 
-Le langage R permet  d'embarquer des librairies en JavaScript dans des packages. Cela ouvre la possibilté de réaliser des poroposer des outils de cartographie interactive. Ici, nous parlerons de 2 exemples principaux. 
+Le langage R permet d'embarquer des librairies en JavaScript dans des packages. Cela ouvre la possibilité de réaliser des proposer des outils de cartographie interactive. Ici, nous parlerons de 2 exemples principaux.
 
 ## mapview
 
-Le package `mapview` permet de créer rapidement et facilement des visualisations interactives de données spatiales avec ou sans fond de carte. Le package s'installe de la façon suivante : 
+Le package `mapview` permet de créer rapidement et facilement des visualisations interactives de données spatiales avec ou sans fond de carte. Le package s'installe de la façon suivante :
 
 ```{r}
 #| eval: false
@@ -964,7 +953,7 @@ mapview(africa) + mapview(st_centroid(africa))
 
 ## Leaflet
 
-Leaflet est un package basé sur le JavaScript, permettant de faire de la cartographie interactive. On l'installe de la façon suivante : 
+Leaflet est un package basé sur le JavaScript, permettant de faire de la cartographie interactive. On l'installe de la façon suivante :
 
 ```{r}
 #| eval: false
@@ -975,14 +964,14 @@ install.packages('leaflet')
 library(leaflet)
 ```
 
-Réalisation d'une primière carte simple
+Réalisation d'une première carte simple
 
 ```{r}
 m = leaflet() %>% addTiles()
 m
 ```
 
-Zoom sur une localisation précise. 
+Zoom sur une localisation précise.
 
 ```{r}
 sfax <- c(10.760034694759957, 34.7407779744004)
@@ -1006,9 +995,9 @@ m3
 
 ## Au delà de R
 
-Avec Quarto, il est également possible de créer dans Rstudio, des cartes thématiques interactives pour le 
+Avec Quarto, il est également possible de créer dans Rstudio, des cartes thématiques interactives pour le
 
-**Pour celles et ceux qui le souhaitent, c'est ce que nous ferons vendredi matin**. 
+**Pour celles et ceux qui le souhaitent, c'est ce que nous ferons vendredi matin**.
 
 ```{r}
 #| echo: false

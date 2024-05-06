@@ -13,6 +13,7 @@ format:
 editor_options: 
   chunk_output_type: console
 ---
+
 **L'objectif de ce TP est d'apprendre à créer des cartes interactives avec Quarto et la bibliothèque JavaScript `geoviz`.**
 
 ```{ojs}
@@ -87,7 +88,7 @@ Dans ce TP, nous privilégions l'utilisation du logiciel **Rstudio**. Pour le t�
 
 ## 2.2 Créer un document Quarto
 
--   Sur votre ordinateur, creez un dossier **TP_geoviz** à l'emplacement de votre choix.
+-   Sur votre ordinateur, créez un dossier **TP_geoviz** à l'emplacement de votre choix.
 -   Ouvrez le logiciel RStudio
 -   Créez un document Quarto (file \> New File \> Quarto Document)
 
@@ -110,7 +111,7 @@ editor: visual
 
 -   Choisissez un titre
 -   Sauvegardez le fichier **index.qmd** dans le dossier **TP_geoviz**.
--   Dans ce repertoire, créez également un sous répertoire **data** pour stocker les données.
+-   Dans ce répertoire, créez également un sous répertoire **data** pour stocker les données.
 
 ![](img/dossiers.png)
 
@@ -136,7 +137,7 @@ Dans Quarto, toutes les instructions à suivre s'écrivent dans des chunks ojs
 Attention, les chucks et les cellules sont deux concepts différents.
 :::
 
-Un chunk contanant une seule cellule
+Un chunk contenant une seule cellule
 
 ````         
 ``` {ojs}
@@ -144,7 +145,7 @@ sum = 10 + 10
 ```
 ````
 
-Un chunk contanant trois cellules
+Un chunk contenant trois cellules
 
 ````         
 ``` {ojs}
@@ -154,7 +155,7 @@ c = a * b
 ```
 ````
 
-Un chunk contanant une seule cellule
+Un chunk contenant une seule cellule
 
 ````         
 ``` {ojs}
@@ -190,7 +191,7 @@ donne ceci :
 
 Le rayon du cercle est égal à **`{ojs} radius`**
 
-Pour générer le document, il faut clicher sur le bouton `Render` ou utiliser le racourci clavier **Ctrl+Shift+K**.
+Pour générer le document, il faut clicher sur le bouton `Render` ou utiliser le raccourci clavier **Ctrl+Shift+K**.
 
 Une fois que vous avez cliqué sur *Render*, la page web s'affiche dans la panneau *Viewer* et un dossier **Docs** est crée. Il contient le site web généré.
 
@@ -206,7 +207,7 @@ Au fil de ce notebook, vous pourrez vous référer à des éléments de document
 
 ![](img/logo_doc.png)
 
-Vous pourrez également accéder à des exemples pédagogiques et des demos en ligne en cliquant sur celui-là.
+Vous pourrez également accéder à des exemples pédagogiques et des démos en ligne en cliquant sur celui-là.
 
 ![](img/logo_exemple.png)
 
@@ -214,7 +215,7 @@ Vous pourrez également accéder à des exemples pédagogiques et des demos en l
 
 Le jeu de données utilisé est issu de la [banque mondiale](https://data.worldbank.org/indicator). Les données ont été mises en forme [ici](https://observablehq.com/@neocartocnrs/world-bank-data).
 
-Téléchargez les données et placez-les-les dans votre repertoire **data**.
+Téléchargez les données et placez-les-les dans votre répertoire **data**.
 
 <a href = "https://github.com/neocarto/geounivr2024/raw/main/VEN1_geoviz_TP/data/worldbank.zip"><img src="img/download.png" height="50px"/><img /></a>
 
@@ -234,7 +235,7 @@ Ce fichier zip contient 3 fichiers.
 worldbank.filenames
 ```
 
-Il existe plusieurs fonctions disponibles pout interpréter les formats de données. La fonction `.csv()`permet d'importer des données csv. La fonction `.xlsx()` permet d'importer des tableurs excel. La fonction `.json()` permet d'importer des données au format JSON. Ici, on va donc créer 3 jeux de données bien distincts.
+Il existe plusieurs fonctions disponibles pour interpréter les formats de données. La fonction `.csv()`permet d'importer des données csv. La fonction `.xlsx()` permet d'importer des tableurs excel. La fonction `.json()` permet d'importer des données au format JSON. Ici, on va donc créer 3 jeux de données bien distincts.
 
 -   Les données
 
@@ -323,7 +324,7 @@ Pour la visualiser, on a besoin d'importer une bibliothèque de cartographie. Ic
 
 <a href = "https://riatelab.github.io/geoviz/" target = "_BLANK"><img src="img/geoviz.jpeg" width="350px"/></img></a>
 
-On l'importe grace à l'instruction `require()`.
+On l'importe grâce à l'instruction `require()`.
 
 ```{ojs}
 viz = require("geoviz@0.6.0")
@@ -335,25 +336,25 @@ Pour visualiser simplement les géométries avec une couleur aléatoire, on tape
 viz.path({data: world})
 ```
 
-La carte est un peu grande. Nous pouvons la redimensionner en utilisant le parametre `svg_width`.
+La carte est un peu grande. Nous pouvons la redimensionner en utilisant le paramètre `svg_width`.
 
 ```{ojs}
 viz.path({data: world, svg_width: 790})
 ```
 
 ::: {.callout-note title="Attention"}
-L'attribut `svg_width` modifie les parametres du containeur SVG contenant la couche. Nous verrons plus tard comment fonctionnement les containeurs.
+L'attribut `svg_width` modifie les paramètres du containeur SVG contenant la couche. Nous verrons plus tard comment fonctionnement les containers.
 :::
 
 ## 3.4 Personnaliser l'affichage
 
-La bibliothèque `geoviz` n'est pas seulement un viewer de couches SIG. C'est un outil pour réaliser des cartes vertorielles. Avec `geoviz`, les cartes sont dessinées au format SVG. Il est donc possible d'utiliser tous les attributs SVG pour modifier la carte. A une nuance près. Le JavaScript ne support pas les noms de variable avec un tiret. Il est donc d'usage de convertir ce tiret en *camelCase*. Par exemple : `stroke-width` donnera `strokeWidth`.
+La bibliothèque `geoviz` n'est pas seulement un *viewer* de couches SIG. C'est un outil pour réaliser des cartes vectorielles. Avec `geoviz`, les cartes sont dessinées au format SVG. Il est donc possible d'utiliser tous les attributs SVG pour modifier la carte. A une nuance près. Le JavaScript ne support pas les noms de variable avec un tiret. Il est donc d'usage de convertir ce tiret en *camelCase*. Par exemple : `stroke-width` donnera `strokeWidth`.
 
 Vous pouvez essayer :
 
 -   `fill` : couleur de fond
 -   `stroke` : couleur de contour
--   `strokeWidth` : epaisseur des lignes
+-   `strokeWidth` : épaisseur des lignes
 -   `fillOpacity` : opacité du fond
 -   `strokeOpacity` : opacité du contour
 -   `strokeDashArray` : pointillés (par exemple \[2,3\])
@@ -364,7 +365,7 @@ Bref, vous pouvez tout personnaliser comme sur une carte Inkscape ou Illustrator
 viz.path({data: world, svg_width: 790, fill: "#d66bb3", strokeWidth:0.5})
 ```
 
-Rappelez-vous qu'avec Observable, nous sommes dans un environnement interactif et réacif. On peut donc mettre en place des interactions pour personnaliser la carte. <a href="https://observablehq.com/documentation/inputs/overview"><img src="img/logo_doc.png"/></a>
+Rappelez-vous qu'avec Observable, nous sommes dans un environnement interactif et réactif. On peut donc mettre en place des interactions pour personnaliser la carte. <a href="https://observablehq.com/documentation/inputs/overview"><img src="img/logo_doc.png"/></a>
 
 ```{ojs}
 viewof colorfill = Inputs.color({label: "Fond", value: "#4682b4"})
@@ -376,11 +377,11 @@ viewof thickness = Inputs.range([0, 10], {step: 0.1, label: "Epaisseur", value:1
 viz.path({data: world, svg_width:790, fill: colorfill, stroke: colorstroke, strokeWidth: thickness})
 ```
 
-## 4. Logiques et principe de la blibliothèque `geoviz`
+## 4. Logiques et principe de la bibliothèque `geoviz`
 
 ### 4.1 Documentation et exemples
 
-La documettaion de `geoviz` est disponible à l'adresse suivante : <a href="https://riatelab.github.io/geoviz/" target = "_BLANK">riatelab.github.io/geoviz</a>. Cliquez sur ce lien, et conservez précieusement la page pour pouvoir vous y referer à tout moment.
+La documentation de `geoviz` est disponible à l'adresse suivante : <a href="https://riatelab.github.io/geoviz/" target = "_BLANK">riatelab.github.io/geoviz</a>. Cliquez sur ce lien, et conservez précieusement la page pour pouvoir vous y référer à tout moment.
 
 <a href="https://riatelab.github.io/geoviz/" target = "_BLANK"><img src="img/geoviz_documentation.png" width="790px"/></a>
 
@@ -394,7 +395,7 @@ previews(docs, 120)
 
 ### 4.2. Les `marks`
 
-Au même titre que l'instruction `path`, la bibliothèque `geoviz` met à disposition un certain nombre de `marks` permetant de constituer une carte.
+Au même titre que l'instruction `path`, la bibliothèque `geoviz` met à disposition un certain nombre de `marks` permettant de constituer une carte.
 
 Par exemple :
 
@@ -431,7 +432,7 @@ viz.square({ data: world, svg_width: 790, side: 6, fill: "#38896F", angle: 45 })
 viz.text({ data: world, svg_width: 785, text: "ISO3", fill: "#38896F" })
 ```
 
-Mais la plupart du temps, on utilisera ces `marks` à l'interieur de conteneurs dans lesquels nous pourrons les superposer.
+Mais la plupart du temps, on utilisera ces `marks` à l’intérieur de conteneurs dans lesquels nous pourrons les superposer.
 
 ### 4.3. Les `conteneurs`
 
@@ -451,7 +452,7 @@ Pour créer la carte dans une seule cellule, on met les instruction entre accola
 }
 ```
 
-Pour bien fonctionner, le conteneur a besoin que vous definissiez une `projection` et/ou une emprise géographie (`domain`).
+Pour bien fonctionner, le conteneur a besoin que vous définissiez une `projection` et/ou une emprise géographie (`domain`).
 
 ::: callout-note
 Notez que dorénavant, c'est au niveau de la fonction `create()` que nous allons définir la taille de la carte.
@@ -469,7 +470,7 @@ Recommençons.
 
 ## 4.4 Les projections
 
-Dans l'ecosystème de `d3js` et `geoviz`, on utilise des fonctions de projections bien spécifiques dédiées à la représentation de données. elles sont réaparties dans 3 bibliothèques : `d3-geo` <a href="https://github.com/d3/d3-geo" target = "_BLANK"><img src="img/logo_doc.png"/></a>, `d3-geo-projection` <a href="https://github.com/d3/d3-geo-projection" target = "_BLANK"><img src="img/logo_doc.png"/></a> et `d3-geo-polygon` <a href="https://github.com/d3/d3-geo-polygon" target = "_BLANK"><img src="img/logo_doc.png"/></a>.
+Dans l’écosystème de `d3js` et `geoviz`, on utilise des fonctions de projections bien spécifiques dédiées à la représentation de données. elles sont réparties dans 3 bibliothèques : `d3-geo` <a href="https://github.com/d3/d3-geo" target = "_BLANK"><img src="img/logo_doc.png"/></a>, `d3-geo-projection` <a href="https://github.com/d3/d3-geo-projection" target = "_BLANK"><img src="img/logo_doc.png"/></a> et `d3-geo-polygon` <a href="https://github.com/d3/d3-geo-polygon" target = "_BLANK"><img src="img/logo_doc.png"/></a>.
 
 On les charge de la façon suivante :
 
@@ -497,7 +498,7 @@ viz.path({data:world, fill :"#38896F", svg_width: 790, svg_projection: d3.geoNat
 ```
 :::
 
-Avec les containeurs, on peut maintenant empiler les couches. En jouant avec les `marks` et les attributs SVG, on peut réaliser de très beaux templates cartographiques.
+Avec les containers, on peut maintenant empiler les couches. En jouant avec les `marks` et les attributs SVG, on peut réaliser de très beaux *templates* cartographiques.
 
 ```{ojs}
 {
@@ -633,7 +634,7 @@ Examinons à nouveau le tableau de données.
 Inputs.table(data)
 ```
 
-Le tableau contient des informations à plusieurs dates. Il y a donc plusieurs fois le même identifiant (id) dans le tableau de données. La première étaoe consiste donc à selectionner une année.
+Le tableau contient des informations à plusieurs dates. Il y a donc plusieurs fois le même identifiant (id) dans le tableau de données. La première étape consiste donc à sélectionner une année.
 
 En JavaScript, on utilise l'instruction `filter`.
 
@@ -671,7 +672,7 @@ world2020 = jointure.featureCollection
 
 ### 5.2. Symboles proportionnels
 
-Pour représenter des données quantitatives absolues, on utilise en cartographie des symboles qu'on fait varier de façon proprtionnelle. Pour cela, on utilisera la fonction `viz.plot()` <a href = "https://riatelab.github.io/geoviz/global.html#plot" target = "_BLANK"><img src="img/logo_doc.png"/></a> avec `type: "prop"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/prop" target = "_BLANK"><img src="img/logo_doc.png"/></a>. C'est un peu la même logique qu'avec `r::mapsf`.
+Pour représenter des données quantitatives absolues, on utilise en cartographie des symboles qu'on fait varier de façon proportionnelle. Pour cela, on utilisera la fonction `viz.plot()` <a href = "https://riatelab.github.io/geoviz/global.html#plot" target = "_BLANK"><img src="img/logo_doc.png"/></a> avec `type: "prop"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/prop" target = "_BLANK"><img src="img/logo_doc.png"/></a>. C'est un peu la même logique qu'avec `r::mapsf`.
 
 La carte peut se dessiner comme ceci :
 
@@ -698,7 +699,7 @@ return svg.render()
 
 De nombreuses palettes de couleurs sont disponibles dans dicopal <a href = "https://observablehq.com/@neocartocnrs/dicopal-library" target = "_BLANK"><img src="img/logo_exemple.png"/></a>
 
-### 5.4 Carte choroplethe
+### 5.4 Carte choroplèthe
 
 Pour réaliser une carte choroplèthe, on utilisera le `type: "choro"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/choro" target = "_BLANK"><img src="img/logo_doc.png"/></a>
 
@@ -710,13 +711,13 @@ return svg.render()
 }
 ```
 
-Avec `method`, vous pouvez changer la méthode de discretisation : 'quantile', 'q6', 'equal', 'jenks', 'msd', 'geometric', 'headtail', 'pretty', 'arithmetic' ou 'nestedmeans'.
+Avec `method`, vous pouvez changer la méthode de discrétisation : 'quantile', 'q6', 'equal', 'jenks', 'msd', 'geometric', 'headtail', 'pretty', 'arithmetic' ou 'nestedmeans'.
 
 Avec `nb`, vous pouvez changer le nombre de classes.
 
 Avec `colors`, vous pouvez changer la palette.
 
-### 5.5 Combinsaisons
+### 5.5 Combinaisons
 
 Avec les types "propchoro" <a href = "https://riatelab.github.io/geoviz/global.html#plot/propchoro" target = "_BLANK"><img src="img/logo_doc.png"/></a> et "proptypo" <a href = "https://riatelab.github.io/geoviz/global.html#plot/proptypo" target = "_BLANK"><img src="img/logo_doc.png"/></a> vous pouvez faire des combinaisons graphiques.
 
@@ -730,7 +731,7 @@ return svg.render()
 }
 ```
 
-### 5.6 Tout est paremetrable/configurable
+### 5.6 Tout est paramétrable/configurable
 
 Rappelez-vous également que nous sommes dans un environnement réactif et que vous pouvez proposer des interactions pour modifier la carte.
 
@@ -818,9 +819,9 @@ mybasemap = viz.tool.merge({geom: world, geom_id: "ISO3", data: mydata, data_id:
 
 ## 7. Les dashboards
 
-Depuis la version 1.4, Quarto propose des mises en page à la façon de dashboards. Tout ce que nous avons vu précédemment est donc facilement mobilisable pour réaliser une application complète. Queleques exemples sont disponibles sur le site de Quarto.
+Depuis la version 1.4, Quarto propose des mises en page à la façon de *dashboards*. Tout ce que nous avons vu précédemment est donc facilement mobilisable pour réaliser une application complète. Quelques exemples sont disponibles sur le site de Quarto.
 
-<a href = "https://quarto.org/docs/dashboards/examples/" target = "_BLANK"><img src="img/dashboards.png" width = 790></img></a>
+<a href = "https://quarto.org/docs/dashboards/examples/" target = "_BLANK"><img src="img/dashboards.png" width="790"/></img></a>
 
 Voir un exemple ici : [neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard](https://neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard/index.html)
 
