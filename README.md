@@ -1,10 +1,11 @@
 # GEO UNIV'R Tunisie 2024
 
-- Voir neocarto.github.io/geounivr2024
+
+<img src = "logo.png" width = "250px"></img>
 
 ## Liste des cours et supports sur la cartographie
 
-- <a href = "https://neocarto.github.io/geounivr2024/MAR_2_carto_intro/docs/index.html" target = "BLANK">MAR_2_catro_intro</a>
+- <a href = "https://neocarto.github.io/geounivr2024/MAR_2_carto_intro/docs/index.html" target = "BLANK">MAR_2_carto_intro</a>
 
 Présentation d'introduction à la cartographie thématique. Son histoire. Ses regles. Etc.
 

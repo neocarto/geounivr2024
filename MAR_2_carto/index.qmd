@@ -1,17 +1,26 @@
 ---
-title: "GEO UNIV'R Tunisie 2024"
-subtitle: "Faire des cartes thématiques avec R"
+title: "Faire des cartes thématiques avec R"
+subtitle: "GEO UNIV'R Tunisie 2024"
 date: "`r Sys.Date()`"
-author: "Nicolas Lambert, Elina Marveaux, Ronan Ysebaert"
+author: "Nicolas Lambert, Ronan Ysebaert, Elina Marveaux"
 format:
   html:
     embed-resources: true
-    theme: yeti
     smooth-scroll: true
     fontsize: 0.9em
     toc: true
+    toc-depth: 2
+    toc-title: "."
+    crossrefs-hover: false
+    theme: [yeti, style.scss]
+knitr:
+  opts_chunk:
+    out.width: "100%"
 editor_options: 
   chunk_output_type: console
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ![](./img/contourlines.png)
@@ -398,10 +407,11 @@ La fonction `mf_map()` est la fonction centrale du package `mapsf`. Elle remplac
 mf_map(africa)
 ```
 
- La fonction `mf_title()` permet d'ajouter un titre à la place de *main*. Avec `add = TRUE`, on peut supproposer des couches.
+La fonction `mf_title()` permet d'ajouter un titre à la place de *main*. Avec `add = TRUE`, on peut supproposer des couches.
 
 ::: callout-tip
 ## Astuce
+
 En affichant une première couche avec `border = NA` et `col = NA`, on peut ajouter un calque vide pour fixer l'emprise de la carte
 :::
 
@@ -603,7 +613,7 @@ mf_map(x = africa,
        inches	= 0.4)
 ```
 
-Ou bien : 
+Ou bien :
 
 ```{r}
 #| warning: false
@@ -995,7 +1005,7 @@ m3
 
 ## Au delà de R
 
-Avec Quarto, il est également possible de créer dans Rstudio, des cartes thématiques interactives pour le
+Avec Quarto et Observable JavaScript, il est également possible de créer des cartes thématiques interactives dans Rstudio. 
 
 **Pour celles et ceux qui le souhaitent, c'est ce que nous ferons vendredi matin**.
 
@@ -1011,6 +1021,7 @@ ojs_define(a = sf_geojson(africa))
 viz = require("geoviz@0.6")
 world = JSON.parse(w) 
 africa = JSON.parse(a)
+viewof title = Inputs.text({ label: "Titre", value: "Population en Afrique, 2020" })
 viewof size = Inputs.range([300, 790], {label: "Taille de la carte", value: 790, step: 1})
 viewof k = Inputs.range([10, 100], {label: "Taille du plus gros cercle", value: 50, step: 1})
 viewof dodge = Inputs.toggle({label: "Écarter les cercles", value: false})
@@ -1020,7 +1031,7 @@ viewof leg_type = Inputs.radio(["separate", "nested"], {
 })
 
 svg = viz.create({domain: africa, margin: 30, background:"#B5DFFD", width : size, zoomable:true})
-header = svg.header({text: "Population en Afrique, 2020", background_fill:"#3c799e", fill: "white" })
+header = svg.header({text: title, background_fill:"#3c799e", fill: "white" })
 path = svg.path({datum: world, fill:"white", fillOpacity:0.3})
 afr = svg.path({data: africa, fill:"#3c799e", strokeWidth:0.5, filter: svg.effect.shadow()})
 bubble = svg.plot({

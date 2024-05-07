@@ -1,17 +1,26 @@
 ---
-title: "GEO UNIV'R Tunisie 2024"
-subtitle: "Cartographier pour le Web avec `quarto` `{ojs}` et `geoviz`"
+title: "Cartographier pour le Web avec `quarto` `{ojs}` et `geoviz`"
+subtitle: "GEO UNIV'R Tunisie 2024"
 date: "`r Sys.Date()`"
-author: "Nicolas Lambert, Elina Marveaux, Ronan Ysebaert"
+author: "Nicolas Lambert, Ronan Ysebaert, Elina Marveaux"
 format:
   html:
     embed-resources: true
-    theme: yeti
     smooth-scroll: true
     fontsize: 0.9em
     toc: true
+    toc-depth: 2
+    toc-title: "."
+    crossrefs-hover: false
+    theme: [yeti, style.scss]
+knitr:
+  opts_chunk:
+    out.width: "100%"
 editor_options: 
   chunk_output_type: console
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 **L'objectif de ce TP est d'apprendre à créer des cartes interactives avec Quarto et la bibliothèque JavaScript `geoviz`.**
@@ -377,9 +386,9 @@ viewof thickness = Inputs.range([0, 10], {step: 0.1, label: "Epaisseur", value:1
 viz.path({data: world, svg_width:790, fill: colorfill, stroke: colorstroke, strokeWidth: thickness})
 ```
 
-## 4. Logiques et principe de la bibliothèque `geoviz`
+# 4. La bibliothèque `geoviz`
 
-### 4.1 Documentation et exemples
+## 4.1 Documentation et exemples
 
 La documentation de `geoviz` est disponible à l'adresse suivante : <a href="https://riatelab.github.io/geoviz/" target = "_BLANK">riatelab.github.io/geoviz</a>. Cliquez sur ce lien, et conservez précieusement la page pour pouvoir vous y référer à tout moment.
 
@@ -393,7 +402,7 @@ import { docs, previews } from "@neocartocnrs/geoviz-appendix"
 previews(docs, 120)
 ```
 
-### 4.2. Les `marks`
+## 4.2. Les `marks`
 
 Au même titre que l'instruction `path`, la bibliothèque `geoviz` met à disposition un certain nombre de `marks` permettant de constituer une carte.
 
@@ -434,7 +443,7 @@ viz.text({ data: world, svg_width: 785, text: "ISO3", fill: "#38896F" })
 
 Mais la plupart du temps, on utilisera ces `marks` à l’intérieur de conteneurs dans lesquels nous pourrons les superposer.
 
-### 4.3. Les `conteneurs`
+## 4.3. Les `conteneurs`
 
 Dans `geoviz`, pour combiner différentes couches sur une carte, vous devez créer un conteneur SVG <a href="https://observablehq.com/@neocartocnrs/containers"><img src="img/logo_exemple.png" target="_BLANK"/></a>. Ce conteneur est créé avec l'instruction `create()` <a href="https://riatelab.github.io/geoviz/global.html#create"  target = "_BLANK"><img src="img/logo_doc.png"/></a>. Il peut ensuite être affiché à l'aide de la fonction `render()` <a href="https://riatelab.github.io/geoviz/global.html#render"  target = "_BLANK"><img src="img/logo_doc.png"/></a>.
 
@@ -622,9 +631,9 @@ Mais tout est personnalisable
 }
 ```
 
-## 5 Cartographie statistique
+# 5 Cartographie statistique
 
-### 5.1. La jointure
+## 5.1. La jointure
 
 La première chose à faire ici est de réaliser une jointure entre les géométries et les données statistiques importées en haut de ce notebook depuis un fichier zip.
 
@@ -670,7 +679,7 @@ Le nouveau fond de carte est donc :
 world2020 = jointure.featureCollection
 ```
 
-### 5.2. Symboles proportionnels
+## 5.2. Symboles proportionnels
 
 Pour représenter des données quantitatives absolues, on utilise en cartographie des symboles qu'on fait varier de façon proportionnelle. Pour cela, on utilisera la fonction `viz.plot()` <a href = "https://riatelab.github.io/geoviz/global.html#plot" target = "_BLANK"><img src="img/logo_doc.png"/></a> avec `type: "prop"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/prop" target = "_BLANK"><img src="img/logo_doc.png"/></a>. C'est un peu la même logique qu'avec `r::mapsf`.
 
@@ -685,7 +694,7 @@ return svg.render()
 }
 ```
 
-### 5.3. Typologies
+## 5.3. Typologies
 
 Pour réaliser des typologies, on utilise également la fonction `plot()` avec `type: "typo"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/typo" target = "_BLANK"><img src="img/logo_doc.png"/></a>
 
@@ -699,7 +708,7 @@ return svg.render()
 
 De nombreuses palettes de couleurs sont disponibles dans dicopal <a href = "https://observablehq.com/@neocartocnrs/dicopal-library" target = "_BLANK"><img src="img/logo_exemple.png"/></a>
 
-### 5.4 Carte choroplèthe
+## 5.4 Carte choroplèthe
 
 Pour réaliser une carte choroplèthe, on utilisera le `type: "choro"` <a href = "https://riatelab.github.io/geoviz/global.html#plot/choro" target = "_BLANK"><img src="img/logo_doc.png"/></a>
 
@@ -717,7 +726,7 @@ Avec `nb`, vous pouvez changer le nombre de classes.
 
 Avec `colors`, vous pouvez changer la palette.
 
-### 5.5 Combinaisons
+## 5.5 Combinaisons
 
 Avec les types "propchoro" <a href = "https://riatelab.github.io/geoviz/global.html#plot/propchoro" target = "_BLANK"><img src="img/logo_doc.png"/></a> et "proptypo" <a href = "https://riatelab.github.io/geoviz/global.html#plot/proptypo" target = "_BLANK"><img src="img/logo_doc.png"/></a> vous pouvez faire des combinaisons graphiques.
 
@@ -731,7 +740,7 @@ return svg.render()
 }
 ```
 
-### 5.6 Tout est paramétrable/configurable
+## 5.6 Tout est paramétrable/configurable
 
 Rappelez-vous également que nous sommes dans un environnement réactif et que vous pouvez proposer des interactions pour modifier la carte.
 
@@ -817,14 +826,29 @@ mybasemap = viz.tool.merge({geom: world, geom_id: "ISO3", data: mydata, data_id:
 }
 ```
 
-## 7. Les dashboards
+# 6 - Aller plus loin
+
+## 6.1. Les dashboards
 
 Depuis la version 1.4, Quarto propose des mises en page à la façon de *dashboards*. Tout ce que nous avons vu précédemment est donc facilement mobilisable pour réaliser une application complète. Quelques exemples sont disponibles sur le site de Quarto.
 
 <a href = "https://quarto.org/docs/dashboards/examples/" target = "_BLANK"><img src="img/dashboards.png" width="790"/></img></a>
 
-Voir un exemple ici : [neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard](https://neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard/index.html)
+- Voir un exemple ici : [neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard](https://neocarto.github.io/geounivr2024/VEN1_geoviz_dashboard/index.html)
+- Code source : [github.com/neocarto/geounivr2024/blob/main/VEN1_geoviz_dashboard](https://github.com/neocarto/geounivr2024/blob/main/VEN1_geoviz_dashboard/index.qmd)
+- Documentaation Quarto : [quarto.org/docs/dashboards](https://quarto.org/docs/dashboards/)
 
-## 8. Aller plus loin
+## 6.2. Tutos et cours
 
 <a href = "https://observablehq.com/collection/@neocartocnrs/observable-cest-quoi" target = "_BLANK"><img src="img/obsgeo.png"/></img></a>
+
+## 6.3 Exemples de cartes réalisées avec `geoviz`
+
+```{ojs}
+//| echo: false
+import { examples } from "@neocartocnrs/geoviz-appendix"
+previews(examples, 150)
+```
+
+
+

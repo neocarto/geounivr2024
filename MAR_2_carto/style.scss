@@ -1,0 +1,109 @@
+/*-- scss:defaults --*/
+$presentation-h1-font-size: 2em;
+$modal-footer-bg: red;
+$presentation-font-size-root: 40px;
+$presentation-h3-font-size: 1.05em;
+$link-color: #75AADB !default;
+$footer-bg: #75AADB;
+$modal-footer-bg: #75AADB;
+$presentation-code-font-size: 5em;
+  
+
+
+.title {
+  color: #225789 !important;
+}
+
+.subtitle {
+    color: #225789;;
+  }
+
+.quarto-title-author {
+  color: #225789 !important;
+}
+
+.date {
+  color: #225789 !important;
+}
+
+.reveal section h2 {
+  color: #75AADB;
+}
+
+.medium {
+  font-size: 0.9em;
+}
+
+.small {
+  font-size: 0.65em;
+}
+
+.panel-tabset-tabby a {
+  color: #75AADB;
+  font-size: 0.9em;
+}
+
+/*-- scss:rules --*/
+
+.observablehq {
+  font-size:12px;
+}
+
+.reveal .header:before {
+  content: "";
+}
+
+.reveal .header {
+  background: "logo.png";
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  float: left;
+  text-align: center;
+  background-color: white;
+  color: #75AADB;
+  padding:0px;
+  opacity: 1;
+}
+
+section.slide h1 {
+  font-size: 4em !important;
+  color: #75AADB !important;
+}
+
+section.slide h2 {
+  font-size: 1.8em !important;
+  color: white !important;
+  background-color: #75AADB !important;
+  width: 200vw;
+  position: relative;
+  left: -20vw;
+  padding-left: 20vw;
+  padding-top: 0px;
+  padding-bottom: 10px;
+}
+
+.reveal code.sourceCode {
+  font-size: 2em;
+}
+
+
+figure figcaption {
+  font-size: 0.8em; /* Taille de la police de 0.8em */
+  font-style: italic;
+  color: gray; /* Couleur de la police gris foncé */
+  text-align: center; /* Aligner le texte au centre */
+  margin: 10px 0; /* Marge supérieure et inférieure de 10px */
+  padding: 5px; /* Rembourrage interne de 5px */
+}      
+  
+/*-- css:doc html --*/
+  
+#toc-title{
+  background-image: url("img/logo.png");
+  background-position: top center;
+  background-size: contain;
+  padding-top: 80px !important;
+  padding-bottom: 80px !important;
+  background-repeat: no-repeat;
+}

@@ -1,10 +1,10 @@
 ---
 title: "Petite histoire de la cartographie thématique"
-subtitle: "Monastir, Tunisie, 2024"
-author: "Nicolas Lambert"
+subtitle: "GEO UNIV'R Tunisie 2024"
+author: "Nicolas Lambert, Ronan Ysebaert, Elina Marveaux"
 title-slide-attributes:
   data-background-color: black
-  data-background-image: img/IMG_20190716_144718.jpg
+  data-background-image: img/line.png
   data-background-size: cover
   data-background-opacity: "0.7"
 format:
