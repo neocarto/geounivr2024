@@ -1,7 +1,7 @@
 # GEO UNIV'R Tunisie 2024
 
 
-<img src = "logo.png" width = "250px"></img>
+<img src = "logo.png" width = "250px"/>
 
 ## Liste des cours et supports sur la cartographie
 
