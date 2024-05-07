@@ -9,11 +9,11 @@
 
 Présentation d'introduction à la cartographie thématique. Son histoire. Ses regles. Etc.
 
-- MAR_3_carto - cartographie avec <a href = "https://magrit.cnrs.fr/" target = "_BLANK">Magrit</a> et avec <a href = "https://www.qgis.org/fr/site/" target = "_BLANK>QGIS</a>
+- MAR_3_carto - cartographie avec <a href = "https://magrit.cnrs.fr/" target = "_BLANK">Magrit</a> et avec <a href = "https://www.qgis.org/fr/site/" target = "_BLANK">QGIS</a>
 
-Données d'exemples sur le Minde :  <a href = "https://github.com/neocarto/geounivr2024/raw/main/data/world_geom.json" target = "_BLANK">Géométries</a> <a href = "https://github.com/neocarto/geounivr2024/raw/main/data/world_stats.json" target = "_BLANK">Statistiques</a> 
+Données d'exemples sur le Monde :  <a href = "https://github.com/neocarto/geounivr2024/raw/main/data/world_geom.json" target = "_BLANK">Géométries</a> | <a href = "https://github.com/neocarto/geounivr2024/raw/main/data/world_stats.json" target = "_BLANK">Statistiques</a> 
 
-<a href = "https://github.com/neocarto/geounivr2024/raw/main/MAR_2_carto/data/afrique.zip" target = "_BLANK">Données d'exemple (Afrique)</a>
+
 
 - <a href = "https://neocarto.github.io/geounivr2024/MAR_2_carto/index.html" target = "_BLANK">MAR_2_carto</a>
 
