@@ -15,13 +15,6 @@ Cartographie thématique avec R.
 
 - <a href = "https://neocarto.github.io/geounivr2024/MAR_2_carto/index.html" target = "_BLANK">MAR_2_carto</a>
 
-### [MAR3] Cartographie thématique avec Magrit
-
-Pas de support. Juste une démo du logiciel <a href = "https://magrit.cnrs.fr/" target = "_BLANK">Magrit</a>.
-
-Données d'exemples sur le Monde :  <a href = "https://github.com/neocarto/geounivr2024/raw/main/data/world_geom.json" target = "_BLANK">Géométries</a> | <a href = "https://github.com/neocarto/geounivr2024/raw/main/data/world_stats.json" target = "_BLANK">Statistiques</a> 
-
-
 ### [VEN1] Géovisualisation
 
 Cours d'introduction. Cartographier pour le Web avec quarto.
