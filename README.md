@@ -15,6 +15,8 @@ Cartographie thématique avec R.
 
 - <a href = "https://neocarto.github.io/geounivr2024/MAR_2_carto/index.html" target = "_BLANK">MAR_2_carto</a>
 
+- <a href = "https://github.com/neocarto/geounivr2024/blob/main/carto.zip" target = "_BLANK">Notebook quarto pour démarrer</a>
+
 ### [VEN1] Géovisualisation
 
 Cours d'introduction. Cartographier pour le Web avec quarto.
