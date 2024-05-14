@@ -6,7 +6,7 @@ format: html
 
 Le support de cours est disponible [ici](https://neocarto.github.io/geounivr2024/MAR_2_carto).
 
-# Chargement des données
+# Chargement et mise en forme des données
 
 Chargement de la bibliothèque `sf`
 
@@ -22,6 +22,19 @@ Données et géométries
 geom <- st_transform(st_read("data/afrique.gpkg", layer = "africa"),"epsg:3857")
 data <- read.csv("data/worldbank_africa.csv")
 ```
+
+Jointure
+
+```{r}
+africa <-  merge(
+  x = geom[,"ISO3"],  
+  y = data,  
+  by.x = "ISO3",
+  by.y = "id",
+  all.x = TRUE   
+)
+```
+
 
 Couches d'habillage
 
