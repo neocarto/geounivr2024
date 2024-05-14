@@ -1,0 +1,53 @@
+---
+title: "Cartographie avec R"
+author: "Votre nom ici"
+format: html
+---
+
+Le support de cours est disponible [ici](https://neocarto.github.io/geounivr2024/MAR_2_carto).
+
+# Chargement des données
+
+Chargement de la bibliothèque `sf`
+
+```{r}
+#| output: false
+library("sf")
+```
+
+Données et géométries
+
+```{r}
+#| output: false
+geom <- st_transform(st_read("data/afrique.gpkg", layer = "africa"),"epsg:3857")
+data <- read.csv("data/worldbank_africa.csv")
+```
+
+Couches d'habillage
+
+```{r}
+#| output: false
+world <- st_transform(st_read("data/afrique.gpkg", layer = "world"),"epsg:3857")
+places <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_populated_places"),"epsg:3857")
+rail <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_railroads"),"epsg:3857")
+roads <- st_transform(st_read("data/afrique.gpkg", layer = "ne_10m_roads"),"epsg:3857")
+```
+
+# Cartographie avec `sf`
+
+```{r}
+# on va mettre des trucs ici
+```
+
+
+# Cartographie avec `mapsf`
+
+```{r}
+# on va mettre des trucs ici pour faire de belles cartes
+```
+
+# Aller plus loin
+
+```{r}
+# on va mettre aussi des trucs cool ici
+```
