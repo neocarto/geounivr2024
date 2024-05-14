@@ -194,7 +194,7 @@ width
 Puis on écrit
 
 ``` r
-#| fig-heigt: 6
+#| fig-height: 6
 #| fig-width: 6.36
 ```
 
